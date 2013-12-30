@@ -3,12 +3,17 @@ package com.example.simplerelativelayout;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class MainActivity extends Activity {
 
 	private Spinner month, day;
+	private static int[] DAY_MAX = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31,
+			30, 31 };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +27,28 @@ public class MainActivity extends Activity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, data);
 		month.setAdapter(adapter);
+		month.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> adapter, View view,
+					int position, long id) {
+				setDayData(position);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+			}
+		});
+	}
+
+	private void setDayData(int month) {
+		Integer[] data = new Integer[DAY_MAX[month]];
+		for (int i = 0; i < DAY_MAX[month]; i++) {
+			data[i] = i + 1;
+		}
+		ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this,
+				android.R.layout.simple_spinner_item, data);
+		day.setAdapter(adapter);
 	}
 
 	@Override
