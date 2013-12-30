@@ -9,7 +9,7 @@
     tools:context=".MainActivity" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/reminder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -20,26 +20,26 @@
     </EditText>
 
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/editText1"
-        android:layout_toLeftOf="@+id/spinner2" />
+        android:layout_alignLeft="@+id/reminder"
+        android:layout_below="@+id/reminder"
+        android:layout_toLeftOf="@+id/day" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/day"
         android:layout_width="96dp"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/editText1"
-        android:layout_below="@+id/editText1" />
+        android:layout_alignRight="@+id/reminder"
+        android:layout_below="@+id/reminder" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/spinner2"
-        android:layout_below="@+id/spinner2"
+        android:layout_alignRight="@+id/day"
+        android:layout_below="@+id/day"
         android:text="Button" />
 
 </RelativeLayout>
