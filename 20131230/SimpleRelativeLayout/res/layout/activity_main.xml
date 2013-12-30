@@ -8,9 +8,38 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <Spinner
+        android:id="@+id/spinner1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_below="@+id/editText1"
+        android:layout_toLeftOf="@+id/spinner2" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/editText1"
+        android:layout_below="@+id/editText1" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/spinner2"
+        android:layout_below="@+id/spinner2"
+        android:text="Button" />
 
 </RelativeLayout>
