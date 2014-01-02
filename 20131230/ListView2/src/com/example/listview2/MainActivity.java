@@ -18,6 +18,9 @@ import android.widget.SimpleAdapter;
 
 public class MainActivity extends Activity {
 
+	/**
+	 * https://gist.github.com/godgunman/cc6cf5a57d8d668e68cb
+	 */
 	private final static String[] URLS = {
 			"http://www.google.com/doodles/moon-festival-mid-autumn-festival-2012",
 			"http://www.google.com/doodles/anton-bernolaks-250th-birthday",
