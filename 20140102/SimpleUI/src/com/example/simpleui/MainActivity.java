@@ -13,6 +13,8 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -34,6 +36,16 @@ public class MainActivity extends Activity {
 		inputEdit = (EditText) findViewById(R.id.input);
 		isEncrypt = (CheckBox) findViewById(R.id.encrypt);
 
+		isEncrypt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				SharedPreferences.Editor editor = sp.edit();
+				editor.putBoolean("isEncrypt", isChecked);
+				editor.commit();				
+			}
+		});
+		
 		submitButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -63,6 +75,7 @@ public class MainActivity extends Activity {
 		});
 
 		inputEdit.setText(sp.getString("text", ""));
+		isEncrypt.setChecked(sp.getBoolean("isEncrypt", false));
 	}
 
 	@Override
