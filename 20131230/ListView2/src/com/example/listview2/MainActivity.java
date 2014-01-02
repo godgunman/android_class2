@@ -6,13 +6,29 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 public class MainActivity extends Activity {
 
+	private final static String[] URLS = {
+			"http://www.google.com/doodles/moon-festival-mid-autumn-festival-2012",
+			"http://www.google.com/doodles/anton-bernolaks-250th-birthday",
+			"http://www.google.com/doodles/niels-bohrs-127th-birthday",
+			"http://www.google.com/doodles/brazilian-elections-2012",
+			"http://www.google.com/doodles/chuseok-2012",
+			"http://www.google.com/doodles/david-unaipons-140th-birthday",
+			"http://www.google.com/doodles/francisco-gabilondo-solers-105th-birthday",
+			"http://www.google.com/doodles/brian-o-nuallains-101st-birthday",
+			"http://www.google.com/doodles/german-reunification-day-2012",
+			"http://www.google.com/doodles/janusz-korczaks-year" };
 	private ListView listView;
 
 	@Override
@@ -42,8 +58,21 @@ public class MainActivity extends Activity {
 
 		SimpleAdapter adapter = new SimpleAdapter(this, data,
 				R.layout.listview_item, from, to);
-		
+
 		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view,
+					int position, long id) {
+				String url = URLS[position];
+				Intent intent = new Intent();
+				intent.setAction(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse(url));
+				startActivity(intent);
+			}
+		});
+
 	}
 
 	@Override
