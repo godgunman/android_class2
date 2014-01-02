@@ -3,6 +3,7 @@ package com.example.simpleui;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.Editable;
 import android.util.Log;
@@ -37,15 +38,16 @@ public class MainActivity extends Activity {
 		isEncrypt = (CheckBox) findViewById(R.id.encrypt);
 
 		isEncrypt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
+
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
 				SharedPreferences.Editor editor = sp.edit();
 				editor.putBoolean("isEncrypt", isChecked);
-				editor.commit();				
+				editor.commit();
 			}
 		});
-		
+
 		submitButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -93,5 +95,9 @@ public class MainActivity extends Activity {
 		}
 		editable.clear();
 		Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+
+		Intent intent = new Intent();
+		intent.setClass(this, MessageActivity.class);
+		startActivity(intent);
 	}
 }
