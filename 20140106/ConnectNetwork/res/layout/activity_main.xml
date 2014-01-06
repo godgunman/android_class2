@@ -32,7 +32,7 @@
         android:layout_alignBottom="@+id/button1"
         android:layout_marginLeft="14dp"
         android:layout_toRightOf="@+id/button1"
-        android:onClick="onClick"
+        
         android:text="method2" />
 
 </RelativeLayout>

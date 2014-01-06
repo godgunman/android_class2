@@ -36,7 +36,8 @@ public class MainActivity extends Activity {
 
 		textView = (TextView) findViewById(R.id.textView1);
 		progress = new ProgressDialog(this);
-		
+		progress.setMessage("Loading ... ");
+
 		/*
 		 * StrictMode.ThreadPolicy policy = new
 		 * StrictMode.ThreadPolicy.Builder() .permitAll().build();
@@ -62,33 +63,39 @@ public class MainActivity extends Activity {
 	}
 
 	private String readStreamToString(InputStream is) {
-		BufferedReader buffer = new BufferedReader(new InputStreamReader(is));
-		try {
-			String line;
-			String all = "";
-			while ((line = buffer.readLine()) != null) {
-				all += line;
-			}
-			return all;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 		return null;
 	}
 
 	private void fetchMethod1(String url) {
-		AsyncTask<String, Void, String> task = new AsyncTask<String, Void, String>() {
+		AsyncTask<String, Integer, String> task = new AsyncTask<String, Integer, String>() {
 			@Override
 			protected void onPreExecute() {
+				progress.setProgress(0);
+				progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 				progress.show();
 			}
-			
+
 			@Override
 			protected String doInBackground(String... params) {
 				try {
 					URL url = new URL(params[0]);
 					URLConnection urlConnection = url.openConnection();
-					return readStreamToString(urlConnection.getInputStream());
+
+					BufferedReader buffer = new BufferedReader(
+							new InputStreamReader(urlConnection.getInputStream()));
+					try {
+						String line;
+						String all = "";
+
+						while ((line = buffer.readLine()) != null) {
+							all += line;
+							publishProgress(progress.getProgress() + 1);
+						}
+						return all;
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -101,6 +108,10 @@ public class MainActivity extends Activity {
 			protected void onPostExecute(String result) {
 				textView.setText(result);
 				progress.dismiss();
+			}
+
+			protected void onProgressUpdate(Integer... values) {
+				setProgress(values[0]);
 			}
 		};
 		task.execute(url);
