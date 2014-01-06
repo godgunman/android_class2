@@ -8,32 +8,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <FrameLayout
-        android:id="@+id/frameLayout1"
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:padding="5dp" >
 
-        <ScrollView
+        <TextView
+            android:id="@+id/textView1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#50555555" >
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </ScrollView>
-    </FrameLayout>
+            android:layout_height="wrap_content" />
+    </ScrollView>
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/frameLayout1"
-        android:layout_below="@+id/frameLayout1"
+        android:layout_alignLeft="@+id/scrollView1"
+        android:layout_below="@+id/scrollView1"
         android:onClick="onClick"
         android:text="method1" />
 
@@ -44,5 +38,12 @@
         android:layout_alignBottom="@+id/button1"
         android:layout_toRightOf="@+id/button1"
         android:text="method2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="學號:AND234999" />
 
 </RelativeLayout>
