@@ -36,7 +36,6 @@ public class MainActivity extends Activity {
 
 		textView = (TextView) findViewById(R.id.textView1);
 		progress = new ProgressDialog(this);
-		progress.setMessage("Loading ... ");
 
 		/*
 		 * StrictMode.ThreadPolicy policy = new
@@ -62,17 +61,13 @@ public class MainActivity extends Activity {
 		textView.setText(content);
 	}
 
-	private String readStreamToString(InputStream is) {
-
-		return null;
-	}
-
 	private void fetchMethod1(String url) {
 		AsyncTask<String, Integer, String> task = new AsyncTask<String, Integer, String>() {
 			@Override
 			protected void onPreExecute() {
 				progress.setProgress(0);
 				progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+				progress.setMessage("Loading ... ");
 				progress.show();
 			}
 
@@ -83,16 +78,22 @@ public class MainActivity extends Activity {
 					URLConnection urlConnection = url.openConnection();
 
 					BufferedReader buffer = new BufferedReader(
-							new InputStreamReader(urlConnection.getInputStream()));
+							new InputStreamReader(
+									urlConnection.getInputStream()));
 					try {
 						String line;
-						String all = "";
+						StringBuilder builder = new StringBuilder();
 
+						/* For performance, using StringBuilder. */
 						while ((line = buffer.readLine()) != null) {
-							all += line;
-							publishProgress(progress.getProgress() + 1);
+							builder.append(line);
+							
+							/* fake progress */
+							int currentProgress = progress.getProgress();
+							int add = (int) ((100 - currentProgress) * 0.02);
+							publishProgress(currentProgress + add);
 						}
-						return all;
+						return builder.toString();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -106,16 +107,16 @@ public class MainActivity extends Activity {
 
 			@Override
 			protected void onPostExecute(String result) {
+				progress.setProgress(100);
 				textView.setText(result);
 				progress.dismiss();
 			}
 
 			protected void onProgressUpdate(Integer... values) {
-				setProgress(values[0]);
+				progress.setProgress(values[0]);
 			}
 		};
 		task.execute(url);
-
 	}
 
 	private String fetchMethod2() {
