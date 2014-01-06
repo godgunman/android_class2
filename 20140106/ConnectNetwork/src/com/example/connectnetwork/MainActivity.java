@@ -8,18 +8,30 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HttpContext;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
 	private static String SAMPLE_URL = "http://tw.yahoo.com/";
+	private TextView textView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		textView = (TextView) findViewById(R.id.textView1);
 	}
 
 	@Override
@@ -44,6 +56,16 @@ public class MainActivity extends Activity {
 		return null;
 	}
 
+	public void onClick(View view) {
+		String content = null;
+		if (view.getId() == R.id.button1) {
+			content = fetchMethod1();
+		} else if (view.getId() == R.id.button2) {
+			content = fetchMethod2();
+		}
+		textView.setText(content);
+	}
+
 	private String fetchMethod1() {
 		try {
 			URL url = new URL(SAMPLE_URL);
@@ -59,7 +81,17 @@ public class MainActivity extends Activity {
 	}
 
 	private String fetchMethod2() {
-
+		DefaultHttpClient httpClient = new DefaultHttpClient();
+		HttpGet target = new HttpGet(SAMPLE_URL);
+		try {
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+			String content = httpClient.execute(target, responseHandler);
+			return content;
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
