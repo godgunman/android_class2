@@ -1,5 +1,13 @@
 package com.example.takephoto;
 
+import java.io.ByteArrayOutputStream;
+
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseFile;
+
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
@@ -19,6 +27,11 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		Parse.initialize(this, "hCJ3YM593qsoFGt3CNVa0XRECus3Vbrz56HdyUvD",
+				"WRUIsQkcyj0fgv8inoF6hSeo0rftbr2WTKPWLE09");
+		ParseAnalytics.trackAppOpened(getIntent());
+
 		setContentView(R.layout.activity_main);
 
 		image = (ImageView) findViewById(R.id.imageView1);
@@ -45,6 +58,7 @@ public class MainActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				Bitmap bitmap = data.getParcelableExtra("data");
 				image.setImageBitmap(bitmap);
+				save(bitmap);
 			}
 		}
 	}
@@ -56,4 +70,19 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	private void save(Bitmap bitmap) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG, 90, baos);
+		byte[] bytes = baos.toByteArray();
+
+		ParseFile file = new ParseFile("photo.png", bytes);
+		try {
+			file.save();
+			Log.d("debug", file.getUrl());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 }
