@@ -1,9 +1,5 @@
 package com.example.simpleui;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import com.parse.FindCallback;
@@ -51,7 +47,7 @@ public class MessageActivity extends Activity {
 				if (e == null) {
 					String all = "";
 					for (ParseObject obj : objects) {
-						all += obj.getString("text");
+						all += obj.getString("text") + "\n";
 					}
 					textView.setText(all);
 				} else {
