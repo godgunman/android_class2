@@ -1,28 +1,35 @@
 package com.example.takephoto;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 public class MainActivity extends Activity {
 
 	private static final int REQUESTCODE_TAKE_PHOTO = 0;
 
 	private ImageView image;
+	private LinearLayout ll;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,9 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		image = (ImageView) findViewById(R.id.imageView1);
+		ll = (LinearLayout) findViewById(R.id.ll);
+		
+		getPhotos();
 	}
 
 	@Override
@@ -76,13 +86,35 @@ public class MainActivity extends Activity {
 		byte[] bytes = baos.toByteArray();
 
 		ParseFile file = new ParseFile("photo.png", bytes);
-		try {
-			file.save();
-			Log.d("debug", file.getUrl());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ParseObject object = new ParseObject("Photo");
+		object.put("file", file);
+		object.saveInBackground();
 
+	}
+
+	private void addImage(Bitmap bitmap) {
+		ImageView image = new ImageView(this);
+		image.setImageBitmap(bitmap);
+		ll.addView(image);
+	}
+
+	private void getPhotos() {
+		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Photo");
+		query.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> objects, ParseException e) {
+				for (ParseObject obj : objects) {
+					ParseFile file = obj.getParseFile("file");
+					try {
+						byte[] bytes = file.getData();
+						Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0,
+								bytes.length);
+						addImage(bitmap);
+					} catch (ParseException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
 	}
 }
