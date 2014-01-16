@@ -1,11 +1,18 @@
 package com.firstandroidapp;
 
-import android.os.Bundle;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.TextView;
-import com.facebook.*;
-import com.facebook.model.*;
+
+import com.facebook.Request;
+import com.facebook.Request.GraphUserListCallback;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 
 public class MainActivity extends Activity {
 
@@ -39,6 +46,15 @@ public class MainActivity extends Activity {
 									}
 								}
 							});
+					Request.executeMyFriendsRequestAsync(session, new GraphUserListCallback() {
+						
+						@Override
+						public void onCompleted(List<GraphUser> users, Response response) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+					
 				}
 			}
 		});
