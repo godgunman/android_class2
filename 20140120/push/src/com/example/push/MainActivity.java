@@ -1,15 +1,21 @@
 package com.example.push;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
 import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.PushService;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
-
 public class MainActivity extends Activity {
+
+	private EditText editText;
+	private Button button;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +26,21 @@ public class MainActivity extends Activity {
 				"mtEDB3PHhq7pRs6aGgEZoeQC900McDYBZxQ8UVd1");
 
 		PushService.setDefaultPushCallback(this, MainActivity.class);
+		PushService.subscribe(this, "all", MainActivity.class);
+
+		editText = (EditText) findViewById(R.id.editText1);
+		button = (Button) findViewById(R.id.button1);
+		button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String content = editText.getText().toString();
+				ParsePush push = new ParsePush();
+				push.setMessage(content);
+				push.setChannel("all");
+				push.sendInBackground();
+			}
+		});
 	}
 
 	@Override
