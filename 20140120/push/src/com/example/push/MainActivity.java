@@ -2,6 +2,10 @@ package com.example.push;
 
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
@@ -56,8 +60,19 @@ public class MainActivity extends Activity {
 				String content = editText.getText().toString();
 				String channel = "device_id_"
 						+ (String) spinner.getSelectedItem();
+
+				JSONObject object = new JSONObject();
+				try {
+					object.put("action", "com.example.UPDATE_STATUS");
+					object.put("mykey", content);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				ParsePush push = new ParsePush();
-				push.setMessage(content);
+//				push.setMessage(content);
+				push.setData(object);
 				push.setChannel(channel);
 				push.sendInBackground();
 			}

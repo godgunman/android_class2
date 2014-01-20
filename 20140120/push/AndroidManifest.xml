@@ -23,8 +23,8 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.example.push.permission.C2D_MESSAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -58,6 +58,11 @@
 
                 <!-- IMPORTANT: Change "com.example.push" to match your app's package name. -->
                 <category android:name="com.example.push" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.example.push.MyCustomReceiver" >
+            <intent-filter>
+                <action android:name="com.example.UPDATE_STATUS" />
             </intent-filter>
         </receiver>
     </application>
