@@ -54,9 +54,11 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				String content = editText.getText().toString();
+				String channel = "device_id_"
+						+ (String) spinner.getSelectedItem();
 				ParsePush push = new ParsePush();
 				push.setMessage(content);
-				push.setChannel("all");
+				push.setChannel(channel);
 				push.sendInBackground();
 			}
 		});
@@ -64,7 +66,7 @@ public class MainActivity extends Activity {
 		ParseObject object = new ParseObject("info");
 		object.put("device_id", getDeviceId());
 		object.saveInBackground();
-	
+
 		loadDeviceId();
 	}
 
