@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class MainActivity extends Activity {
 	private Button button;
 	private TextView textView;
 	private Spinner spinner;
+	public static LinearLayout linearLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class MainActivity extends Activity {
 		textView = (TextView) findViewById(R.id.textView1);
 		textView.setText(getDeviceId());
 
+		linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
+		
 		button = (Button) findViewById(R.id.button1);
 		button.setOnClickListener(new OnClickListener() {
 
@@ -64,7 +68,7 @@ public class MainActivity extends Activity {
 				JSONObject object = new JSONObject();
 				try {
 					object.put("action", "com.example.UPDATE_STATUS");
-					object.put("mykey", content);
+					object.put("message", content);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

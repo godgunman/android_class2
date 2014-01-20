@@ -1,4 +1,5 @@
 package com.example.push;
+
 import java.util.Iterator;
 
 import org.json.JSONException;
@@ -8,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.TextView;
 
 public class MyCustomReceiver extends BroadcastReceiver {
 	private static final String TAG = "MyCustomReceiver";
@@ -26,7 +28,14 @@ public class MyCustomReceiver extends BroadcastReceiver {
 			while (itr.hasNext()) {
 				String key = (String) itr.next();
 				Log.d(TAG, "..." + key + " => " + json.getString(key));
+
+				if (key.equals("message")) {
+					TextView textView = new TextView(context);
+					textView.setText(json.getString(key));
+					MainActivity.linearLayout.addView(textView);
+				}
 			}
+
 		} catch (JSONException e) {
 			Log.d(TAG, "JSONException: " + e.getMessage());
 		}

@@ -41,4 +41,13 @@
         android:layout_alignTop="@+id/button1"
         android:layout_toLeftOf="@+id/button1" />
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner1"
+        android:layout_below="@+id/spinner1"
+        android:orientation="vertical" >
+    </LinearLayout>
+
 </RelativeLayout>
