@@ -16,8 +16,9 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		Parse.initialize(this, "8QDvApRKYPOJRtuv3GeZTBpZY5df7ZGfw8mHOoQx",
-				"FdS2fbg6vdE9dHLNC0nU7q5Zyl7SZUkNzlNabg4o");
+		Parse.initialize(this, "5ess4RyqXAhsTcMD9nYrLIbiUtcTn7ZzUoH1zqPV",
+				"mtEDB3PHhq7pRs6aGgEZoeQC900McDYBZxQ8UVd1");
+
 		PushService.setDefaultPushCallback(this, MainActivity.class);
 	}
 
