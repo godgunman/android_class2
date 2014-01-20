@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -54,6 +55,8 @@ public class MainActivity extends Activity {
 	public void onClick(View view) {
 		String content = null;
 		if (view.getId() == R.id.button1) {
+			EditText editText = (EditText) findViewById(R.id.editText1);
+			
 			fetchMethod1(SAMPLE_URL);
 		} else if (view.getId() == R.id.button2) {
 			content = fetchMethod2();
@@ -74,6 +77,7 @@ public class MainActivity extends Activity {
 			@Override
 			protected String doInBackground(String... params) {
 				try {
+					
 					URL url = new URL(params[0]);
 					URLConnection urlConnection = url.openConnection();
 
