@@ -38,17 +38,17 @@ public class LoginActivity extends Activity {
 	}
 
 	public void enterMessageActivity(View view) {
-		register();
+		String nickName = ((EditText) findViewById(R.id.editText1)).getText()
+				.toString();
+		register(nickName);
 
 		Intent intent = new Intent();
 		intent.setClass(this, MessageActivity.class);
+		intent.putExtra("nickName", nickName);
 		startActivity(intent);
 	}
 
-	private void register() {
-		String nickName = ((EditText) findViewById(R.id.editText1)).getText()
-				.toString();
-
+	private void register(Object nickName) {
 		ParseObject object = new ParseObject("info");
 		object.put("nickName", nickName);
 		object.put("deviceId", getDeviceId());

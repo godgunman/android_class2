@@ -25,12 +25,15 @@ public class MessageActivity extends Activity {
 
 	private EditText editText;
 	private Spinner spinner;
+	private String nickName;
 	public static LinearLayout linearLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_message);
+
+		nickName = getIntent().getStringExtra("nickName");
 
 		editText = (EditText) findViewById(R.id.editText1);
 		spinner = (Spinner) findViewById(R.id.spinner1);
@@ -73,8 +76,8 @@ public class MessageActivity extends Activity {
 		JSONObject object = new JSONObject();
 		try {
 			object.put("action", "com.example.UPDATE_STATUS");
-			object.put("alert", content);
-			object.put("message", content);
+			object.put("alert", nickName + " say: " + content);
+			object.put("message", nickName + " say: " + content);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
