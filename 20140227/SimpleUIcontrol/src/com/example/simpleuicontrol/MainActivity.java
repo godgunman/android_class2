@@ -6,13 +6,13 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
 	private TextView textView;
-
+	private TextView textView2;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -22,14 +22,15 @@ public class MainActivity extends Activity {
 	}
 
 	public void moveLeft(View view) {
-		RelativeLayout.LayoutParams params = (LayoutParams) textView
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) textView
 				.getLayoutParams();
+		
 		params.leftMargin -= 10;
 		textView.setLayoutParams(params);
 	}
 
 	public void moveRight(View view) {
-		RelativeLayout.LayoutParams params = (LayoutParams) textView
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) textView
 				.getLayoutParams();
 		params.leftMargin += 10;
 		textView.setLayoutParams(params);
