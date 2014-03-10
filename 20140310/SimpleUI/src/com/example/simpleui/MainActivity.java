@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ public class MainActivity extends Activity {
 
 	private EditText editText;
 	private Button button;
+	private CheckBox isEncrypt;
 	private SharedPreferences sp;
 
 	@Override
@@ -28,17 +32,17 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		sp = getSharedPreferences("settings", Context.MODE_PRIVATE);
-		
+
 		editText = (EditText) findViewById(R.id.editText1);
 		editText.setHint("type something ...");
 		editText.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				
+
 				Editor editor = sp.edit();
 				editor.putString("text", editText.getText().toString());
 				editor.commit();
-				
+
 				Log.d("debug",
 						"keyOcde =" + keyCode + "keyEvent=" + event.getAction());
 				if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -60,6 +64,18 @@ public class MainActivity extends Activity {
 				sendMessage();
 			}
 		});
+
+		isEncrypt = (CheckBox) findViewById(R.id.checkBox1);
+		isEncrypt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				Editor editor = sp.edit();
+				editor.putBoolean("isEncrypt", isChecked);
+				editor.commit();
+			}
+		});
+		isEncrypt.setChecked(sp.getBoolean("isEncrypt", false));
 	}
 
 	public void submit2(View view) {
@@ -68,6 +84,11 @@ public class MainActivity extends Activity {
 
 	private void sendMessage() {
 		String text = editText.getText().toString();
+
+		if (isEncrypt.isChecked()) {
+			text = "***********";
+		}
+
 		editText.getText().clear();
 		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
 
