@@ -1,7 +1,10 @@
 package com.example.simpleui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,17 +20,25 @@ public class MainActivity extends Activity {
 
 	private EditText editText;
 	private Button button;
+	private SharedPreferences sp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		sp = getSharedPreferences("settings", Context.MODE_PRIVATE);
+		
 		editText = (EditText) findViewById(R.id.editText1);
 		editText.setHint("type something ...");
 		editText.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				
+				Editor editor = sp.edit();
+				editor.putString("text", editText.getText().toString());
+				editor.commit();
+				
 				Log.d("debug",
 						"keyOcde =" + keyCode + "keyEvent=" + event.getAction());
 				if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -39,6 +50,8 @@ public class MainActivity extends Activity {
 				return false;
 			}
 		});
+
+		editText.setText(sp.getString("text", ""));
 
 		button = (Button) findViewById(R.id.button1);
 		button.setOnClickListener(new OnClickListener() {
