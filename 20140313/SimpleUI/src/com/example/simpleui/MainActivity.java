@@ -82,10 +82,6 @@ public class MainActivity extends Activity {
 			}
 		});
 		isEncrypt.setChecked(sp.getBoolean("isEncrypt", false));
-
-		ParseObject testObject = new ParseObject("TestObject");
-		testObject.put("foo", "new data");
-		testObject.saveInBackground();
 	}
 
 	public void submit2(View view) {
@@ -94,6 +90,11 @@ public class MainActivity extends Activity {
 
 	private void sendMessage() {
 		String text = editText.getText().toString();
+
+		ParseObject messageObject = new ParseObject("message");
+		messageObject.put("text", text);
+		messageObject.put("isEncrypt", isEncrypt.isChecked());
+		messageObject.saveInBackground();
 
 		if (isEncrypt.isChecked()) {
 			text = "***********";
