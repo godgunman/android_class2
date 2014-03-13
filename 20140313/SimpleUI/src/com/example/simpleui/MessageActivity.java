@@ -4,6 +4,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
+
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,37 +24,26 @@ public class MessageActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_message);
 
-		String text = getIntent().getStringExtra("text");
-		writeFile(text);
-
 		textView = (TextView) findViewById(R.id.message);
-		textView.setText(readFile());
+		getData();
 	}
 
-	private void writeFile(String text) {
+	private void getData() {
+		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("message");
 		try {
-			text += "\n";
-			FileOutputStream fos = openFileOutput("history.txt",
-					Context.MODE_APPEND);
-			fos.write(text.getBytes());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			
+			String result = "";
+			List<ParseObject> messages = query.find();
+			for (ParseObject message : messages) {
+				String text = message.getString("text");
+				boolean isEncrypt = message.getBoolean("isEncrypt");
+				result += text + "," + isEncrypt + "\n";
+			}
+			textView.setText(result);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	private String readFile() {
-		try {
-			FileInputStream fis = openFileInput("history.txt");
-			byte[] buffer = new byte[1024];
-			fis.read(buffer);
-			return new String(buffer);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }

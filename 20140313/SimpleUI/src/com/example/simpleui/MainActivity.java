@@ -1,7 +1,9 @@
 package com.example.simpleui;
 
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import android.app.Activity;
 import android.content.Context;
@@ -94,8 +96,20 @@ public class MainActivity extends Activity {
 		ParseObject messageObject = new ParseObject("message");
 		messageObject.put("text", text);
 		messageObject.put("isEncrypt", isEncrypt.isChecked());
-		messageObject.saveInBackground();
+		
+		messageObject.saveInBackground(new SaveCallback() {
+			@Override
+			public void done(ParseException e) {
+				if (e == null) {
+					Log.d("debug", "done");
+				} else {
+					e.printStackTrace();
+				}
+			}
+		});
 
+		Log.d("debug", "after saveInbackground");
+		
 		if (isEncrypt.isChecked()) {
 			text = "***********";
 		}
