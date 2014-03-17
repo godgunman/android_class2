@@ -6,6 +6,7 @@ import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +31,7 @@ public class MainActivity extends Activity {
 	private Button button;
 	private CheckBox isEncrypt;
 	private SharedPreferences sp;
+	private ProgressDialog progress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		isEncrypt.setChecked(sp.getBoolean("isEncrypt", false));
+		progress = new ProgressDialog(this);
 	}
 
 	public void submit2(View view) {
@@ -91,17 +94,25 @@ public class MainActivity extends Activity {
 	}
 
 	private void sendMessage() {
-		String text = editText.getText().toString();
+		progress.setTitle("Loading...");
+		progress.show();
+		
+		final String text = editText.getText().toString();
 
 		ParseObject messageObject = new ParseObject("message");
 		messageObject.put("text", text);
 		messageObject.put("isEncrypt", isEncrypt.isChecked());
-		
+
 		messageObject.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
 				if (e == null) {
+					progress.dismiss();
 					Log.d("debug", "done");
+					Intent intent = new Intent();
+					intent.setClass(MainActivity.this, MessageActivity.class);
+					intent.putExtra("text", text);
+					startActivity(intent);
 				} else {
 					e.printStackTrace();
 				}
@@ -109,18 +120,16 @@ public class MainActivity extends Activity {
 		});
 
 		Log.d("debug", "after saveInbackground");
-		
+
+		String text2;
 		if (isEncrypt.isChecked()) {
-			text = "***********";
+			text2 = "***********";
+		} else {
+			text2 = text;
 		}
 
 		editText.getText().clear();
-		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-
-		Intent intent = new Intent();
-		intent.setClass(this, MessageActivity.class);
-		intent.putExtra("text", text);
-		startActivity(intent);
+		Toast.makeText(this, text2, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
