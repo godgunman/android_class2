@@ -1,10 +1,16 @@
 package com.example.takephoto;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.SaveCallback;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,6 +31,10 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		Parse.initialize(this, "TBj7tIT2KdaoddftugUeL9hKgIB925grhDKrWvCM",
+				"oYOs2OPOZidrK5RLUwH6XhU6JGvwAK9v5ybMkc4Q");
+
 		setContentView(R.layout.activity_main);
 
 		imageView = (ImageView) findViewById(R.id.imageView1);
@@ -62,7 +72,7 @@ public class MainActivity extends Activity {
 	private void save(Bitmap bitmap) {
 		File imageDir = Environment
 				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		if (imageDir.exists()) {
+		if (!imageDir.exists()) {
 			imageDir.mkdir();
 		}
 
@@ -71,10 +81,25 @@ public class MainActivity extends Activity {
 		try {
 			BufferedOutputStream bos = new BufferedOutputStream(
 					new FileOutputStream(imageFile));
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
 			bitmap.compress(Bitmap.CompressFormat.PNG, 90, bos);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 90, baos);
+
+			baos.flush();
+			baos.close();
+
 			bos.flush();
 			bos.close();
+
+			final ParseFile file = new ParseFile("photo.png", baos.toByteArray());
+			file.saveInBackground(new SaveCallback() {
+				@Override
+				public void done(ParseException e) {
+					Log.d("debug", file.getUrl());
+				}
+			});
+			
 			Log.d("debug", "filePath=" + imageFile.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
