@@ -16,6 +16,7 @@ import com.parse.SaveCallback;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -55,6 +56,7 @@ public class MainActivity extends Activity {
 		case R.id.action_takephoto:
 			Intent intent = new Intent();
 			intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, getStoreFile());
 			startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
 			return true;
 		default:
@@ -68,11 +70,23 @@ public class MainActivity extends Activity {
 
 		if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
 			if (resultCode == RESULT_OK) {
-				Bitmap image = (Bitmap) data.getExtras().get("data");
-				save(image);
-				imageView.setImageBitmap(image);
+				Log.d("debug", "extraFile = " + getStoreFile());
+//				Bitmap image = (Bitmap) data.getExtras().get("data");
+//				save(image);
+//				imageView.setImageBitmap(image);
 			}
 		}
+	}
+
+	private Uri getStoreFile() {
+		File imageDir = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+		if (!imageDir.exists()) {
+			imageDir.mkdir();
+		}
+
+		File imageFile = new File(imageDir, "photo_extra.png");
+		return Uri.fromFile(imageFile);
 	}
 
 	private void save(Bitmap bitmap) {
