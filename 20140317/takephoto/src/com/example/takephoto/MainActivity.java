@@ -10,6 +10,7 @@ import java.io.IOException;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 import android.app.Activity;
@@ -22,11 +23,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
 	private static final int REQUEST_CODE_TAKE_PHOTO = 0;
 	private ImageView imageView;
+	private TextView filePath;
+	private TextView urlPath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		imageView = (ImageView) findViewById(R.id.imageView1);
+		filePath = (TextView) findViewById(R.id.filePath);
+		urlPath = (TextView) findViewById(R.id.urlPath);
 	}
 
 	@Override
@@ -92,15 +98,23 @@ public class MainActivity extends Activity {
 			bos.flush();
 			bos.close();
 
-			final ParseFile file = new ParseFile("photo.png", baos.toByteArray());
+			ParseObject object = new ParseObject("photo");
+
+			final ParseFile file = new ParseFile("photo.png",
+					baos.toByteArray());
 			file.saveInBackground(new SaveCallback() {
 				@Override
 				public void done(ParseException e) {
 					Log.d("debug", file.getUrl());
+					urlPath.setText(file.getUrl());
 				}
 			});
-			
+
+			object.put("file", file);
+			object.saveInBackground();
+
 			Log.d("debug", "filePath=" + imageFile.getAbsolutePath());
+			filePath.setText(imageFile.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
