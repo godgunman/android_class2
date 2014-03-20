@@ -13,18 +13,18 @@ import com.parse.PushService;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.app.Activity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
 	private EditText editText;
 	private Spinner spinner;
+	private TextView textView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +44,10 @@ public class MainActivity extends Activity {
 
 		editText = (EditText) findViewById(R.id.editText1);
 		spinner = (Spinner) findViewById(R.id.spinner1);
+		textView = (TextView) findViewById(R.id.textView1);
 
 		loadDeviceIds();
+		textView.setText(getDevcieId());
 	}
 
 	private void loadDeviceIds() {
@@ -69,10 +71,10 @@ public class MainActivity extends Activity {
 
 	public void click(View view) {
 		String text = editText.getText().toString();
-		Log.d("debug", text);
+		String id = (String) spinner.getSelectedItem();
 
 		ParsePush push = new ParsePush();
-		push.setChannel("all");
+		push.setChannel("device_id_" + id);
 		push.setMessage(text);
 		push.sendInBackground();
 	}
