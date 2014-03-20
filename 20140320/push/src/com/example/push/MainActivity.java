@@ -1,6 +1,7 @@
 package com.example.push;
 
 import com.parse.Parse;
+import com.parse.ParsePush;
 import com.parse.PushService;
 
 import android.os.Bundle;
@@ -18,10 +19,11 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		Parse.initialize(this, "TBj7tIT2KdaoddftugUeL9hKgIB925grhDKrWvCM",
 				"oYOs2OPOZidrK5RLUwH6XhU6JGvwAK9v5ybMkc4Q");
 		PushService.setDefaultPushCallback(this, MainActivity.class);
+		PushService.subscribe(this, "all", MainActivity.class);
 
 		editText = (EditText) findViewById(R.id.editText1);
 	}
@@ -29,6 +31,11 @@ public class MainActivity extends Activity {
 	public void click(View view) {
 		String text = editText.getText().toString();
 		Log.d("debug", text);
+
+		ParsePush push = new ParsePush();
+		push.setChannel("all");
+		push.setMessage(text);
+		push.sendInBackground();
 	}
 
 	@Override
