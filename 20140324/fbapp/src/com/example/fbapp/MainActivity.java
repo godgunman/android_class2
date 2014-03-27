@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.facebook.Request;
+import com.facebook.Request.Callback;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -28,7 +29,7 @@ public class MainActivity extends Activity {
 				if (session.isOpened()) {
 
 					// make request to the /me API
-					Request.executeMeRequestAsync(session,
+					Request.newMeRequest(session,
 							new Request.GraphUserCallback() {
 
 								// callback after Graph API response with user
@@ -43,6 +44,16 @@ public class MainActivity extends Activity {
 									}
 								}
 							});
+
+					Request.newGraphPathRequest(session, "me?fields=albums",
+							new Callback() {
+
+								@Override
+								public void onCompleted(Response response) {
+
+								}
+							});
+
 				}
 			}
 		});
