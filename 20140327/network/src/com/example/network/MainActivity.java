@@ -14,6 +14,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +31,8 @@ import android.widget.TextView;
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
 
+	protected static final String CLIENT_ID = "S1LC42PP1ZRDU5VWZIIZBIVOVACP4DXX0R5SVSXBQHJS3UP1";
+	protected static final String CLIENT_SECRET = "FCB500VP5QGJEH3GYNHRICNMLZMWXLEOOM0FK30ET5RHTIUC";
 	private TextView textView;
 	private TextView latTextView, lngTextView;
 	private EditText editText;
@@ -87,12 +90,45 @@ public class MainActivity extends Activity {
 						stringBuilder.append(line);
 					}
 
-					return stringBuilder.toString();
+					String result = stringBuilder.toString();
+
+					JSONObject data = new JSONObject(result);
+					JSONObject location = data.getJSONArray("results")
+							.getJSONObject(0).getJSONObject("geometry")
+							.getJSONObject("location");
+					double lat = location.getDouble("lat");
+					double lng = location.getDouble("lng");
+
+					String urlstr2 = String
+							.format("https://api.foursquare.com/v2/venues/search?client_id=%s&client_secret=%s&v=20130815&ll=%s&query=%s",
+									CLIENT_ID, CLIENT_SECRET, lat + "," + lng,
+									"sushi");
+
+					url = new URL(urlstr2);
+					connection = url.openConnection();
+
+					buffer = new BufferedReader(new InputStreamReader(
+							connection.getInputStream()));
+
+					stringBuilder = new StringBuilder();
+					while ((line = buffer.readLine()) != null) {
+						stringBuilder.append(line);
+					}
+
+					String result2 = stringBuilder.toString();
+
+					return result2;
+
+					// latTextView.setText("lat:" + lat);
+					// lngTextView.setText("lng:" + lng);
 
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -101,23 +137,22 @@ public class MainActivity extends Activity {
 
 			@Override
 			protected void onPostExecute(String result) {
+
 				try {
-					JSONObject data = new JSONObject(result);
-					JSONObject location = data.getJSONArray("results")
-							.getJSONObject(0).getJSONObject("geometry")
-							.getJSONObject("location");
-					double lat = location.getDouble("lat");
-					double lng = location.getDouble("lng");
-
-					latTextView.setText("lat:" + lat);
-					lngTextView.setText("lng:" + lng);
-
+					JSONObject object = new JSONObject(result);
+					JSONArray array = object.getJSONObject("response")
+							.getJSONArray("venues");
+					String names = "";
+					for (int i = 0; i < array.length(); i++) {
+						String name = array.getJSONObject(i).getString("name");
+						names += name + "\n";
+					}
+					textView.setText(names);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
-				textView.setText(result);
 				progress.dismiss();
 			}
 		};
