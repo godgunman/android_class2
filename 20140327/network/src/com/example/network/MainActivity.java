@@ -7,18 +7,26 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
 
 	private TextView textView;
+	private EditText editText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +34,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		textView = (TextView) findViewById(R.id.textView1);
+		editText = (EditText) findViewById(R.id.editText1);
 
 		// StrictMode.ThreadPolicy policy = new
 		// StrictMode.ThreadPolicy.Builder()
@@ -34,7 +43,10 @@ public class MainActivity extends Activity {
 	}
 
 	public void fetch(View view) {
-		final String urlStr = "http://tw.yahoo.com/";
+		String address = editText.getText().toString();
+		final String urlStr = String
+				.format("http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false",
+						address);
 
 		AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
 
@@ -67,6 +79,40 @@ public class MainActivity extends Activity {
 					e.printStackTrace();
 				}
 				return null;
+			}
+
+			@Override
+			protected void onPostExecute(String result) {
+				textView.setText(result);
+			}
+		};
+
+		task.execute();
+	}
+
+	public void fetch2(View view) {
+		final String urlStr = "http://tw.yahoo.com/";
+
+		AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+
+			@Override
+			protected void onPreExecute() {
+			}
+
+			@Override
+			protected String doInBackground(Void... params) {
+				DefaultHttpClient httpClient = new DefaultHttpClient();
+				HttpGet get = new HttpGet(urlStr);
+
+				ResponseHandler<String> responseHandler = new BasicResponseHandler();
+				try {
+					return httpClient.execute(get, responseHandler);
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return "";
 			}
 
 			@Override
