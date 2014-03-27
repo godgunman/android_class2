@@ -9,7 +9,6 @@ import java.net.URLConnection;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.Menu;
