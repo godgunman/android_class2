@@ -3,9 +3,11 @@ package com.example.network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -17,6 +19,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +30,7 @@ public class MainActivity extends Activity {
 
 	private TextView textView;
 	private EditText editText;
+	private ProgressDialog progress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,7 @@ public class MainActivity extends Activity {
 
 		textView = (TextView) findViewById(R.id.textView1);
 		editText = (EditText) findViewById(R.id.editText1);
+		progress = new ProgressDialog(this);
 
 		// StrictMode.ThreadPolicy policy = new
 		// StrictMode.ThreadPolicy.Builder()
@@ -43,7 +48,12 @@ public class MainActivity extends Activity {
 	}
 
 	public void fetch(View view) {
-		String address = editText.getText().toString();
+		String address = "";
+		try {
+			address = URLEncoder.encode(editText.getText().toString(), "utf-8");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
 		final String urlStr = String
 				.format("http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false",
 						address);
@@ -52,6 +62,8 @@ public class MainActivity extends Activity {
 
 			@Override
 			protected void onPreExecute() {
+				progress.setTitle("Loading");
+				progress.show();
 			}
 
 			@Override
@@ -84,6 +96,7 @@ public class MainActivity extends Activity {
 			@Override
 			protected void onPostExecute(String result) {
 				textView.setText(result);
+				progress.dismiss();
 			}
 		};
 
