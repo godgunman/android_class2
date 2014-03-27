@@ -14,6 +14,8 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	private TextView textView;
+	private TextView latTextView, lngTextView;
 	private EditText editText;
 	private ProgressDialog progress;
 
@@ -40,6 +43,9 @@ public class MainActivity extends Activity {
 		textView = (TextView) findViewById(R.id.textView1);
 		editText = (EditText) findViewById(R.id.editText1);
 		progress = new ProgressDialog(this);
+
+		latTextView = (TextView) findViewById(R.id.textView2);
+		lngTextView = (TextView) findViewById(R.id.textView3);
 
 		// StrictMode.ThreadPolicy policy = new
 		// StrictMode.ThreadPolicy.Builder()
@@ -95,6 +101,22 @@ public class MainActivity extends Activity {
 
 			@Override
 			protected void onPostExecute(String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					JSONObject location = data.getJSONArray("results")
+							.getJSONObject(0).getJSONObject("geometry")
+							.getJSONObject("location");
+					double lat = location.getDouble("lat");
+					double lng = location.getDouble("lng");
+
+					latTextView.setText("lat:" + lat);
+					lngTextView.setText("lng:" + lng);
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 				textView.setText(result);
 				progress.dismiss();
 			}
