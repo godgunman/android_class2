@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
@@ -53,6 +55,9 @@ public class MainActivity extends ActionBarActivity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	public static class PlaceholderFragment extends Fragment {
+		
+		private Button button;
+		private EditText editText;
 
 		public PlaceholderFragment() {
 		}
@@ -62,6 +67,12 @@ public class MainActivity extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
+			
+			button = (Button) rootView.findViewById(R.id.button1);
+			editText = (EditText) rootView.findViewById(R.id.editText1);
+			
+			button.setText("Send");
+			
 			return rootView;
 		}
 	}
