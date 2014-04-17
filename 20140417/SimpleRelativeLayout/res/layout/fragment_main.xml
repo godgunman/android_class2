@@ -9,7 +9,7 @@
     tools:context="com.example.simplerelativelayout.MainActivity$PlaceholderFragment" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -20,25 +20,26 @@
     </EditText>
 
     <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/editText1" />
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/date"
+        android:layout_below="@+id/name" />
 
     <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="wrap_content"
+        android:id="@+id/date"
+        android:layout_width="96dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner1"
-        android:layout_below="@+id/spinner1" />
+        android:layout_below="@+id/name"
+        android:layout_alignParentRight="true" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner2"
-        android:layout_below="@+id/spinner2"
+        android:layout_alignLeft="@+id/date"
+        android:layout_below="@+id/date"
         android:text="Button" />
 
 </RelativeLayout>
