@@ -4,11 +4,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.os.Build;
@@ -62,6 +64,7 @@ public class MainActivity extends ActionBarActivity {
 
 			LinearLayout ll = new LinearLayout(getActivity());
 			ll.setOrientation(LinearLayout.VERTICAL);
+			ll.setPadding(15, 15, 15, 15);
 
 			EditText toEditText = new EditText(getActivity());
 			toEditText.setHint("To");
@@ -71,6 +74,7 @@ public class MainActivity extends ActionBarActivity {
 
 			EditText messageEditText = new EditText(getActivity());
 			messageEditText.setHint("Message");
+			messageEditText.setGravity(Gravity.TOP);
 
 			ll.addView(toEditText);
 			ll.addView(subjectEditText);
@@ -79,6 +83,15 @@ public class MainActivity extends ActionBarActivity {
 			LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) messageEditText
 					.getLayoutParams();
 			params.weight = 1;
+
+			Button button = new Button(getActivity());
+			button.setText("send");
+			ll.addView(button);
+
+			LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) button
+					.getLayoutParams();
+			params2.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+			params2.gravity = Gravity.RIGHT;
 
 			return ll;
 		}
