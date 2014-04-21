@@ -55,6 +55,8 @@ public class MainActivity extends ActionBarActivity {
 
 		private Spinner month;
 		private Spinner date;
+		private final static int[] LIMITS = new int[] { 31, 28, 31, 30, 31, 30,
+				31, 31, 30, 31, 30, 31 };
 
 		public PlaceholderFragment() {
 		}
@@ -71,25 +73,17 @@ public class MainActivity extends ActionBarActivity {
 			String[] list = getResources().getStringArray(R.array.month);
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					getActivity(), android.R.layout.simple_spinner_item, list);
+
+			final int[] limits = getResources().getIntArray(R.array.date_max);
+			
 			month.setAdapter(adapter);
 			month.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 				@Override
-				public void onItemSelected(AdapterView<?> adpaterView, View view,
-						int position, long id) {
-					if (position==0) {
-						setDateSpinner(31);
-					} else if(position==1) {
-						setDateSpinner(28);
-					} else if(position==2) {
-						setDateSpinner(31);
-					} else if(position==3) {
-						setDateSpinner(30);
-					} else if(position==4) {
-						setDateSpinner(31);
-					} else if(position==5) {
-						setDateSpinner(30);
-					}
+				public void onItemSelected(AdapterView<?> adpaterView,
+						View view, int position, long id) {
+					setDateSpinner(limits[position]);
+//					setDateSpinner(LIMITS[position]);
 				}
 
 				@Override
