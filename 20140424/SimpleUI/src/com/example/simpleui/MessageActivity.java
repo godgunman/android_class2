@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.widget.TextView;
 
-@SuppressLint("NewApi")
 public class MessageActivity extends Activity {
 
 	private static final String FILE_NAME = "text.txt";
@@ -51,7 +50,7 @@ public class MessageActivity extends Activity {
 	private void writeFile2(String text) {
 
 		File docDir = Environment
-				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 		if (docDir.exists() == false) {
 			docDir.mkdirs();
 		}
