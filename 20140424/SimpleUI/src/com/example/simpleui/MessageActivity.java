@@ -1,15 +1,18 @@
 package com.example.simpleui;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.widget.TextView;
 
+@SuppressLint("NewApi")
 public class MessageActivity extends Activity {
 
 	private static final String FILE_NAME = "text.txt";
@@ -24,6 +27,7 @@ public class MessageActivity extends Activity {
 
 		String text = getIntent().getStringExtra("text");
 		writeFile(text);
+		writeFile2(text);
 		textView.setText(readFile());
 	}
 
@@ -33,6 +37,27 @@ public class MessageActivity extends Activity {
 
 			FileOutputStream fos = openFileOutput(FILE_NAME,
 					Context.MODE_APPEND);
+			fos.write(text.getBytes());
+			fos.flush();
+			fos.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void writeFile2(String text) {
+
+		File docDir = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+		File file = new File(docDir, FILE_NAME);
+
+		try {
+			text += "\n";
+
+			FileOutputStream fos = new FileOutputStream(file);
 			fos.write(text.getBytes());
 			fos.flush();
 			fos.close();
