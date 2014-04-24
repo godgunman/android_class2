@@ -52,6 +52,10 @@ public class MessageActivity extends Activity {
 
 		File docDir = Environment
 				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+		if (docDir.exists() == false) {
+			docDir.mkdirs();
+		}
+		
 		File file = new File(docDir, FILE_NAME);
 
 		try {
