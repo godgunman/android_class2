@@ -22,11 +22,8 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.os.Build;
 
 import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseObject;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -40,10 +37,6 @@ public class MainActivity extends ActionBarActivity {
 		}
 		Parse.initialize(this, "6GIweBfY6S45aUHHhzAkw4cgo6Cb7PlvUyYYwJFs",
 				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
-
-		ParseObject testObject = new ParseObject("TestObject");
-		testObject.put("foo", "bar");
-		testObject.saveInBackground();
 
 	}
 
