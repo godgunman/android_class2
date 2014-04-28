@@ -1,7 +1,11 @@
 package com.example.simpleui;
 
+import java.util.List;
+
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import android.app.Activity;
@@ -22,8 +26,30 @@ public class MessageActivity extends Activity {
 		textView = (TextView) findViewById(R.id.textView1);
 
 		String text = getIntent().getStringExtra("text");
-		boolean isChecked = getIntent().getBooleanExtra("checkBox", false); 
+		boolean isChecked = getIntent().getBooleanExtra("checkBox", false);
 
+		saveData(text, isChecked);
+		loadData();
+	}
+
+	private void loadData() {
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+		query.findInBackground(new FindCallback<ParseObject>() {
+			public void done(List<ParseObject> messages, ParseException e) {
+				if (e == null) {
+					String content = "";
+					for (ParseObject message : messages) {
+						content += message.getString("text") + "\n";
+					}
+					textView.setText(content);
+				} else {
+					e.printStackTrace();
+				}
+			}
+		});		
+	}
+	
+	private void saveData(String text, boolean isChecked) {
 		ParseObject testObject = new ParseObject("Message");
 		testObject.put("text", text);
 		testObject.put("checkBox", isChecked);
@@ -38,8 +64,6 @@ public class MessageActivity extends Activity {
 				ok();
 			}
 		});
-		
-		textView.setText(text);
 	}
 
 	private void ok() {
