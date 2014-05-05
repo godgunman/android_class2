@@ -3,6 +3,7 @@ package com.example.takephoto;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,12 +13,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.ImageView;
 import android.os.Build;
 import android.provider.MediaStore;
 
+@SuppressLint("ValidFragment")
 public class MainActivity extends ActionBarActivity {
 
 	private static final int REQUEST_CODE_PHOTO = 55566;
+
+	private ImageView imageView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +69,8 @@ public class MainActivity extends ActionBarActivity {
 
 		if (requestCode == REQUEST_CODE_PHOTO) {
 			if (resultCode == RESULT_OK) {
-				Bitmap bitmap = intent.getParcelableExtra("data");				
+				Bitmap bitmap = intent.getParcelableExtra("data");
+				imageView.setImageBitmap(bitmap);
 				Log.d("debug", "OK");
 
 			} else if (resultCode == RESULT_CANCELED) {
@@ -78,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment {
+	public class PlaceholderFragment extends Fragment {
 
 		public PlaceholderFragment() {
 		}
@@ -86,8 +93,11 @@ public class MainActivity extends ActionBarActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
+
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
+			imageView = (ImageView) rootView.findViewById(R.id.imageView1);
+
 			return rootView;
 		}
 	}
