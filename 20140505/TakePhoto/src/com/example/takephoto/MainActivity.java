@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.parse.Parse;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -45,6 +47,9 @@ public class MainActivity extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+
+		Parse.initialize(this, "8QDvApRKYPOJRtuv3GeZTBpZY5df7ZGfw8mHOoQx",
+				"FdS2fbg6vdE9dHLNC0nU7q5Zyl7SZUkNzlNabg4o");
 	}
 
 	@Override
@@ -84,8 +89,8 @@ public class MainActivity extends ActionBarActivity {
 
 		if (requestCode == REQUEST_CODE_PHOTO) {
 			if (resultCode == RESULT_OK) {
-//				Bitmap bitmap = intent.getParcelableExtra("data");
-//				save(bitmap);
+				// Bitmap bitmap = intent.getParcelableExtra("data");
+				// save(bitmap);
 				imageView.setImageURI(outputFileUri);
 				textView.setText(outputFileUri.getPath());
 				Log.d("debug", "OK");
