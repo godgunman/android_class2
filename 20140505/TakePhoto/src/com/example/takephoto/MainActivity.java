@@ -1,11 +1,15 @@
 package com.example.takephoto;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.SaveCallback;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -48,8 +52,9 @@ public class MainActivity extends ActionBarActivity {
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 
-		Parse.initialize(this, "8QDvApRKYPOJRtuv3GeZTBpZY5df7ZGfw8mHOoQx",
-				"FdS2fbg6vdE9dHLNC0nU7q5Zyl7SZUkNzlNabg4o");
+		Parse.initialize(this, "6GIweBfY6S45aUHHhzAkw4cgo6Cb7PlvUyYYwJFs",
+				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
+
 	}
 
 	@Override
@@ -93,6 +98,7 @@ public class MainActivity extends ActionBarActivity {
 				// save(bitmap);
 				imageView.setImageURI(outputFileUri);
 				textView.setText(outputFileUri.getPath());
+				saveToParse();
 				Log.d("debug", "OK");
 
 			} else if (resultCode == RESULT_CANCELED) {
@@ -112,6 +118,37 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		return new File(imageDir, "photo.png");
+	}
+
+	private void saveToParse() {
+
+		File file = getTargetFile();
+		byte[] data = new byte[(int) file.length()];
+
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			fis.read(data);
+
+			int offset = 0;
+			int numRead = 0;
+			while ((numRead = fis.read(data, offset, data.length - offset)) != -1) {
+				offset += numRead;
+			}
+
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		final ParseFile parseFile = new ParseFile("photo.png", data);
+		parseFile.saveInBackground(new SaveCallback() {
+			@Override
+			public void done(ParseException e) {
+				Log.d("debug", parseFile.getUrl());
+			}
+		});
 	}
 
 	private void save(Bitmap bitmap) {
