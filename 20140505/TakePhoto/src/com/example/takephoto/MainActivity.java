@@ -9,6 +9,7 @@ import java.io.IOException;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 import android.support.v7.app.ActionBarActivity;
@@ -143,7 +144,9 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		final ParseFile parseFile = new ParseFile("photo.png", data);
-		parseFile.saveInBackground(new SaveCallback() {
+		ParseObject object = new ParseObject("photo");
+		object.put("file", parseFile);
+		object.saveInBackground(new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
 				Log.d("debug", parseFile.getUrl());
