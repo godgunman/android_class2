@@ -84,10 +84,9 @@ public class MainActivity extends ActionBarActivity {
 
 		if (requestCode == REQUEST_CODE_PHOTO) {
 			if (resultCode == RESULT_OK) {
-				// Bitmap bitmap = intent.getParcelableExtra("data");
-				// imageView.setImageBitmap(bitmap);
-				// save(bitmap);
-
+//				Bitmap bitmap = intent.getParcelableExtra("data");
+//				save(bitmap);
+				imageView.setImageURI(outputFileUri);
 				textView.setText(outputFileUri.getPath());
 				Log.d("debug", "OK");
 
