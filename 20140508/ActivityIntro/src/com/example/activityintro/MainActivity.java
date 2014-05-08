@@ -3,6 +3,8 @@ package com.example.activityintro;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -42,6 +44,12 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void goToActivity(View view) {
+		Intent intent = new Intent();
+		intent.setClass(this, Activity1.class);
+		startActivity(intent);
 	}
 
 	/**
