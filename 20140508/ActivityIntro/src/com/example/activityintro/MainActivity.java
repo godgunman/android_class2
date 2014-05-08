@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
@@ -87,6 +88,18 @@ public class MainActivity extends ActionBarActivity {
 			Log.d("debug",
 					"intent (whichButton) = "
 							+ intent.getStringExtra("whichButton"));
+		}
+
+		switch (requestCode) {
+		case REQUEST_CODE_ACT1:
+			Toast.makeText(this, "Activity1 back", Toast.LENGTH_SHORT).show();
+			break;
+		case REQUEST_CODE_ACT2:
+			Toast.makeText(this, "Activity2 back", Toast.LENGTH_SHORT).show();
+			break;
+		case REQUEST_CODE_ACT3:
+			Toast.makeText(this, "Activity3 back", Toast.LENGTH_SHORT).show();
+			break;
 		}
 	}
 
