@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
+
+	private static final int REQUEST_CODE_ACT1 = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,16 @@ public class MainActivity extends ActionBarActivity {
 	public void goToActivity(View view) {
 		Intent intent = new Intent();
 		intent.setClass(this, Activity1.class);
-		startActivity(intent);
+		intent.putExtra("message", "hi");
+		startActivityForResult(intent, REQUEST_CODE_ACT1);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent);
+		Log.d("debug", "requestCode=" + requestCode + ", resultCode="
+				+ resultCode);
 	}
 
 	/**
