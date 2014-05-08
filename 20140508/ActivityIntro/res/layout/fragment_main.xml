@@ -12,7 +12,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text="placeholder fragment" />
 
     <Button
         android:id="@+id/button1"
@@ -41,5 +41,14 @@
         android:layout_toRightOf="@+id/button2"
         android:onClick="goToActivity"
         android:text="act3" />
+
+    <Button
+        android:id="@+id/placeholderFragmentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:onClick="replaceFragment"
+        android:text="fragment" />
 
 </RelativeLayout>

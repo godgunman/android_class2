@@ -14,4 +14,11 @@
         android:layout_height="wrap_content"
         android:text="MyFragment1" />
 
+    <Button
+        android:id="@+id/fragment1Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="replaceFragment"
+        android:text="fragment" />
+
 </LinearLayout>
