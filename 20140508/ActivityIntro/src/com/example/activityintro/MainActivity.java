@@ -17,6 +17,8 @@ import android.os.Build;
 public class MainActivity extends ActionBarActivity {
 
 	private static final int REQUEST_CODE_ACT1 = 1;
+	private static final int REQUEST_CODE_ACT2 = 2;
+	private static final int REQUEST_CODE_ACT3 = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +52,29 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void goToActivity(View view) {
+
 		Intent intent = new Intent();
-		intent.setClass(this, Activity1.class);
-		intent.putExtra("message", "hi");
-		startActivityForResult(intent, REQUEST_CODE_ACT1);
+
+		switch (view.getId()) {
+		case R.id.button1:
+			intent.setClass(this, Activity1.class);
+			intent.putExtra("message", "hi1");
+			startActivityForResult(intent, REQUEST_CODE_ACT1);
+			break;
+		case R.id.button2:
+			intent.setClass(this, Activity2.class);
+			intent.putExtra("message", "hi2");
+			startActivityForResult(intent, REQUEST_CODE_ACT2);
+
+			break;
+		case R.id.button3:
+			intent.setClass(this, Activity3.class);
+			intent.putExtra("message", "hi3");
+			startActivityForResult(intent, REQUEST_CODE_ACT3);
+
+			break;
+		}
+
 	}
 
 	@Override
@@ -62,9 +83,11 @@ public class MainActivity extends ActionBarActivity {
 		super.onActivityResult(requestCode, resultCode, intent);
 		Log.d("debug", "requestCode=" + requestCode + ", resultCode="
 				+ resultCode);
-		Log.d("debug",
-				"intent (whichButton) = "
-						+ intent.getStringExtra("whichButton"));
+		if (intent != null) {
+			Log.d("debug",
+					"intent (whichButton) = "
+							+ intent.getStringExtra("whichButton"));
+		}
 	}
 
 	/**
