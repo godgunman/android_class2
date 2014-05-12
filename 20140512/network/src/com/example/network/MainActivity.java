@@ -7,6 +7,13 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -77,7 +84,7 @@ public class MainActivity extends ActionBarActivity {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
 			textView = (TextView) rootView.findViewById(R.id.textView1);
-			String content = fetch();
+			String content = fetch2();
 			textView.setText(content);
 
 			return rootView;
@@ -102,6 +109,24 @@ public class MainActivity extends ActionBarActivity {
 				return result;
 
 			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		private String fetch2() {
+
+			String urlString = "http://www.ntu.edu.tw/";
+			DefaultHttpClient httpClient = new DefaultHttpClient();
+			HttpGet get = new HttpGet(urlString);
+
+			try {
+				ResponseHandler<String> reponseHandler = new BasicResponseHandler();
+				String result = httpClient.execute(get, reponseHandler);
+				return result;
+			} catch (ClientProtocolException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
