@@ -14,21 +14,20 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.TextureView;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.os.Build;
+import android.widget.Button;
+import android.widget.EditText;
 
 @SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity {
@@ -73,7 +72,8 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 
-		private TextView textView;
+		private EditText editText;
+		private Button button;
 
 		public PlaceholderFragment() {
 		}
@@ -83,16 +83,23 @@ public class MainActivity extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
-			textView = (TextView) rootView.findViewById(R.id.textView1);
-			String content = fetch2();
-			textView.setText(content);
+			editText = (EditText) rootView.findViewById(R.id.editText1);
+			button = (Button) rootView.findViewById(R.id.button1);
+
+			button.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					fetch(editText.getText().toString());
+				}
+			});
 
 			return rootView;
 		}
 
-		private String fetch() {
+		private String fetch(String address) {
 
-			String urlString = "http://www.ntu.edu.tw/";
+			String urlString = "http://maps.googleapis.com/maps/api/geocode/json?address="
+					+ address + "&sensor=false";
 			try {
 				URL url = new URL(urlString);
 				URLConnection urlConnection = url.openConnection();
