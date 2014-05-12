@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
+import com.parse.ParsePush;
 import com.parse.PushService;
 
 public class MainActivity extends ActionBarActivity {
@@ -39,6 +40,7 @@ public class MainActivity extends ActionBarActivity {
 				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
 		PushService.setDefaultPushCallback(this, MainActivity.class);
 		ParseInstallation.getCurrentInstallation().saveInBackground();
+		PushService.subscribe(this, "all", MainActivity.class);
 	}
 
 	@Override
@@ -87,6 +89,11 @@ public class MainActivity extends ActionBarActivity {
 			}
 			Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
 			editText.setText("");
+
+			ParsePush push = new ParsePush();
+			push.setChannel("all");
+			push.setMessage(text);
+			push.sendInBackground();
 
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), MessageActivity.class);
