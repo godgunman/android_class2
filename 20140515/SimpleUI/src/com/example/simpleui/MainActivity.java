@@ -1,6 +1,8 @@
 package com.example.simpleui;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.content.Context;
 import android.content.Intent;
@@ -114,8 +116,10 @@ public class MainActivity extends ActionBarActivity {
 			Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
 			editText.setText("");
 
+			String deviceId = (String) spinner.getSelectedItem();
+
 			ParsePush push = new ParsePush();
-			push.setChannel("all");
+			push.setChannel("id_" + deviceId);
 			push.setMessage(text);
 			push.sendInBackground();
 
@@ -131,13 +135,17 @@ public class MainActivity extends ActionBarActivity {
 			query.findInBackground(new FindCallback<ParseObject>() {
 				@Override
 				public void done(List<ParseObject> objects, ParseException e) {
-					String[] deviceId = new String[objects.size()];
+				
+					Set<String> set = new HashSet<String>();
 					for (int i = 0; i < objects.size(); i++) {
-						deviceId[i] = objects.get(i).getString("deviceId");
+						set.add(objects.get(i).getString("deviceId"));
 					}
+					String[] deviceId = new String[set.size()];
+
 					ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 							getActivity(),
-							android.R.layout.simple_spinner_item, deviceId);
+							android.R.layout.simple_spinner_item, set
+									.toArray(deviceId));
 					spinner.setAdapter(adapter);
 				}
 			});
