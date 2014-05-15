@@ -140,12 +140,11 @@ public class MainActivity extends ActionBarActivity {
 					for (int i = 0; i < objects.size(); i++) {
 						set.add(objects.get(i).getString("deviceId"));
 					}
-					String[] deviceId = new String[set.size()];
 
 					ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 							getActivity(),
 							android.R.layout.simple_spinner_item, set
-									.toArray(deviceId));
+									.toArray(new String[set.size()]));
 					spinner.setAdapter(adapter);
 				}
 			});
