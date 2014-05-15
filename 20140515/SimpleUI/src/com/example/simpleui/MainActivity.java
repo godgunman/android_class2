@@ -1,5 +1,7 @@
 package com.example.simpleui;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,17 +17,22 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.PushService;
 
 public class MainActivity extends ActionBarActivity {
@@ -44,7 +51,7 @@ public class MainActivity extends ActionBarActivity {
 		ParseInstallation.getCurrentInstallation().saveInBackground();
 		PushService.subscribe(this, "all", MainActivity.class);
 		PushService.subscribe(this, "id_" + getDeviceId(), MainActivity.class);
-		
+
 		register();
 	}
 
@@ -78,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
 		object.put("deviceId", id);
 		object.saveInBackground();
 	}
-	
+
 	//
 	// public void send(View view) {
 	// Log.d("debug", "click");
@@ -92,6 +99,7 @@ public class MainActivity extends ActionBarActivity {
 		private Button button;
 		private EditText editText;
 		private CheckBox checkBox;
+		private Spinner spinner;
 		private SharedPreferences sp;
 		private SharedPreferences.Editor editor;
 
@@ -116,6 +124,23 @@ public class MainActivity extends ActionBarActivity {
 			intent.putExtra("text", text);
 			intent.putExtra("checkBox", checkBox.isChecked());
 			getActivity().startActivity(intent);
+		}
+
+		private void loadDeviceId() {
+			ParseQuery<ParseObject> query = ParseQuery.getQuery("DeviceId");
+			query.findInBackground(new FindCallback<ParseObject>() {
+				@Override
+				public void done(List<ParseObject> objects, ParseException e) {
+					String[] deviceId = new String[objects.size()];
+					for (int i = 0; i < objects.size(); i++) {
+						deviceId[i] = objects.get(i).getString("deviceId");
+					}
+					ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+							getActivity(),
+							android.R.layout.simple_spinner_item, deviceId);
+					spinner.setAdapter(adapter);
+				}
+			});
 		}
 
 		@Override
@@ -169,8 +194,12 @@ public class MainActivity extends ActionBarActivity {
 			editText.setText(sp.getString("text", ""));
 			checkBox.setChecked(sp.getBoolean("checkBox", false));
 
+			spinner = (Spinner) rootView.findViewById(R.id.spinner1);
+			loadDeviceId();
+
 			return rootView;
 		}
+
 	}
 
 }
