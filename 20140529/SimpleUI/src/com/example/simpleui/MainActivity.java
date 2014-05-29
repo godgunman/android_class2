@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.os.Build;
@@ -60,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
 
 		private Button button;
 		private EditText editText;
+		private CheckBox checkBox;
 
 		public PlaceholderFragment() {
 		}
@@ -72,6 +74,7 @@ public class MainActivity extends ActionBarActivity {
 
 			button = (Button) rootView.findViewById(R.id.button1);
 			editText = (EditText) rootView.findViewById(R.id.editText1);
+			checkBox = (CheckBox) rootView.findViewById(R.id.checkBox1);
 
 			button.setOnClickListener(new OnClickListener() {
 
@@ -85,6 +88,9 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		private void showToast(String text) {
+			if (checkBox.isChecked()) {
+				text = "***********";
+			}
 			Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
 		}
 	}
