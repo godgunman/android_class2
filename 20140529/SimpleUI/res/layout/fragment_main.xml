@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/editText1"
         android:layout_below="@+id/editText1"
+        android:onClick="send"
         android:text="Button" />
 
 </RelativeLayout>
