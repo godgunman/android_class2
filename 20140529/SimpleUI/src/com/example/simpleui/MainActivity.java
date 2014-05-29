@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
@@ -76,12 +77,15 @@ public class MainActivity extends ActionBarActivity {
 
 				@Override
 				public void onClick(View v) {
-					Log.d("debug", "click2");
-					Log.d("debug", "text: " + editText.getText().toString());
+					showToast(editText.getText().toString());
 				}
 			});
 
 			return rootView;
+		}
+
+		private void showToast(String text) {
+			Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
 		}
 	}
 
