@@ -9,6 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
@@ -49,6 +52,8 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 
+		private Spinner spinner;
+
 		public PlaceholderFragment() {
 		}
 
@@ -57,6 +62,15 @@ public class MainActivity extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
+
+			spinner = (Spinner) rootView.findViewById(R.id.spinner1);
+//			String[] months = new String[] { "Jan", "Feb" };
+
+			String[] months = getResources().getStringArray(R.array.months);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+					getActivity(), android.R.layout.simple_spinner_item, months);
+			spinner.setAdapter(adapter);
+
 			return rootView;
 		}
 	}
