@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
@@ -60,18 +63,47 @@ public class MainActivity extends ActionBarActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-//			View rootView = inflater.inflate(R.layout.fragment_main, container,
-//					false);
+			// View rootView = inflater.inflate(R.layout.fragment_main,
+			// container,
+			// false);
 			LinearLayout ll = new LinearLayout(getActivity());
+			ll.setOrientation(LinearLayout.VERTICAL);
+			ll.setPadding(15, 15, 15, 15);
+
 			EditText toEditText = new EditText(getActivity());
+			toEditText.setHint("To");
+
 			EditText subjectEditText = new EditText(getActivity());
+			subjectEditText.setHint("Subject");
+
 			EditText messageEditText = new EditText(getActivity());
+			messageEditText.setHint("Message");
+			messageEditText.setGravity(Gravity.TOP);
+
 			Button send = new Button(getActivity());
+			send.setText("Send");
+
+			/*
+			LinearLayout.LayoutParams layoutParams = 
+					new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
+			layoutParams.weight = 1;
+			messageEditText.setLayoutParams(layoutParams);
+			*/
 			
 			ll.addView(toEditText);
 			ll.addView(subjectEditText);
 			ll.addView(messageEditText);
 			ll.addView(send);
+
+			LinearLayout.LayoutParams layoutParams = (LayoutParams) messageEditText
+					.getLayoutParams();
+			layoutParams.height = 0;
+			layoutParams.weight = 1;
+			
+			LinearLayout.LayoutParams layoutParams2 = (LayoutParams) send
+					.getLayoutParams();
+			layoutParams2.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+			layoutParams2.gravity = Gravity.RIGHT;
 
 			return ll;
 		}
