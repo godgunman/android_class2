@@ -7,8 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
@@ -55,9 +60,20 @@ public class MainActivity extends ActionBarActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
-			return rootView;
+//			View rootView = inflater.inflate(R.layout.fragment_main, container,
+//					false);
+			LinearLayout ll = new LinearLayout(getActivity());
+			EditText toEditText = new EditText(getActivity());
+			EditText subjectEditText = new EditText(getActivity());
+			EditText messageEditText = new EditText(getActivity());
+			Button send = new Button(getActivity());
+			
+			ll.addView(toEditText);
+			ll.addView(subjectEditText);
+			ll.addView(messageEditText);
+			ll.addView(send);
+
+			return ll;
 		}
 	}
 
