@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Build;
@@ -84,23 +83,23 @@ public class MainActivity extends ActionBarActivity {
 			send.setText("Send");
 
 			/*
-			LinearLayout.LayoutParams layoutParams = 
-					new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
-			layoutParams.weight = 1;
-			messageEditText.setLayoutParams(layoutParams);
-			*/
-			
+			 * LinearLayout.LayoutParams layoutParams = new
+			 * LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+			 * 0); layoutParams.weight = 1;
+			 * messageEditText.setLayoutParams(layoutParams);
+			 */
+
 			ll.addView(toEditText);
 			ll.addView(subjectEditText);
 			ll.addView(messageEditText);
 			ll.addView(send);
 
-			LinearLayout.LayoutParams layoutParams = (LayoutParams) messageEditText
+			LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) messageEditText
 					.getLayoutParams();
 			layoutParams.height = 0;
 			layoutParams.weight = 1;
-			
-			LinearLayout.LayoutParams layoutParams2 = (LayoutParams) send
+
+			LinearLayout.LayoutParams layoutParams2 = (LinearLayout.LayoutParams) send
 					.getLayoutParams();
 			layoutParams2.width = LinearLayout.LayoutParams.WRAP_CONTENT;
 			layoutParams2.gravity = Gravity.RIGHT;
