@@ -53,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
 	public static class PlaceholderFragment extends Fragment {
 
 		private Spinner spinner;
+		private Spinner spinner2;
 
 		public PlaceholderFragment() {
 		}
@@ -64,14 +65,28 @@ public class MainActivity extends ActionBarActivity {
 					false);
 
 			spinner = (Spinner) rootView.findViewById(R.id.spinner1);
-//			String[] months = new String[] { "Jan", "Feb" };
+			spinner2 = (Spinner) rootView.findViewById(R.id.spinner2);
+			// String[] months = new String[] { "Jan", "Feb" };
 
 			String[] months = getResources().getStringArray(R.array.months);
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					getActivity(), android.R.layout.simple_spinner_item, months);
 			spinner.setAdapter(adapter);
 
+			setDays(31);
+
 			return rootView;
+		}
+
+		private void setDays(int limit) {
+			String[] days = new String[limit];
+			for (int i = 0; i < days.length; i++) {
+				days[i] = String.valueOf(i + 1);
+			}
+
+			ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(
+					getActivity(), android.R.layout.simple_spinner_item, days);
+			spinner2.setAdapter(adapter2);
 		}
 	}
 
