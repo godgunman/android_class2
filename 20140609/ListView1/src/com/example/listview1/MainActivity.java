@@ -1,5 +1,10 @@
 package com.example.listview1;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -12,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
@@ -64,14 +70,41 @@ public class MainActivity extends ActionBarActivity {
 					false);
 			listView = (ListView) rootView.findViewById(R.id.listView1);
 
+			// setDataByArrayAdapter();
+			setDataBySimpleAdapter();
+			return rootView;
+		}
+
+		private void setDataBySimpleAdapter() {
+
+			String name[] = new String[] { "kuo", "chen" };
+			String sex[] = new String[] { "M", "M" };
+
+			List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+
+			for (int i = 0; i < name.length; i++) {
+				Map<String, String> item = new HashMap<String, String>();
+				item.put("main", name[i]);
+				item.put("sub", sex[i]);
+				data.add(item);
+			}
+
+			String[] from = new String[] { "main", "sub" };
+			int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(), data,
+					android.R.layout.simple_list_item_2, from, to);
+			listView.setAdapter(adapter);
+		}
+
+		private void setDataByArrayAdapter() {
 			String[] data = new String[] { "1", "2", "3", "4", "5", "6", "7",
 					"8", "9", "10", "11", "12", "13" };
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					getActivity(), android.R.layout.simple_list_item_1, data);
 			listView.setAdapter(adapter);
-
-			return rootView;
 		}
+
 	}
 
 }
