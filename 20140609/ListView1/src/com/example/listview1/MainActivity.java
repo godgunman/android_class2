@@ -71,8 +71,36 @@ public class MainActivity extends ActionBarActivity {
 			listView = (ListView) rootView.findViewById(R.id.listView1);
 
 			// setDataByArrayAdapter();
-			setDataBySimpleAdapter();
+			// setDataBySimpleAdapter();
+			setDataBySimpleAdapterAndMyLayout();
 			return rootView;
+		}
+
+		private void setDataBySimpleAdapterAndMyLayout() {
+
+			int[] images = new int[] { R.drawable.image1, R.drawable.image2,
+					R.drawable.image3, R.drawable.image4, R.drawable.image5,
+					R.drawable.image6 };
+			String text[] = new String[] { "¥»¦]§{¨qµ¦ 185 ·³½Ï¨°",
+					"Denmark National Day 2014", "¨È¾ú¦ë¨ô¶ø§B¹p°^ 93 ·³½Ï¨°",
+					"¦¶²ú¨È¯Z¯Ã·æºû¬î¯SÁÉ°Ò¸¦­C®R 169 ·³½Ï¨°", "2014 ¦~¸q¤j§Q¦@©M¬ö©À¤é", "2014 ¦~ºÝ¤È¸`",
+					"Children's Day 2014" };
+
+			List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+
+			for (int i = 0; i < images.length; i++) {
+				Map<String, Object> item = new HashMap<String, Object>();
+				item.put("image", images[i]);
+				item.put("text", text[i]);
+				data.add(item);
+			}
+
+			String[] from = new String[] { "image", "text" };
+			int[] to = new int[] { R.id.imageView1, R.id.textView1 };
+
+			SimpleAdapter adapter = new SimpleAdapter(getActivity(), data,
+					R.layout.listview_item, from, to);
+			listView.setAdapter(adapter);
 		}
 
 		private void setDataBySimpleAdapter() {
