@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -72,8 +74,21 @@ public class MainActivity extends ActionBarActivity {
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					getActivity(), android.R.layout.simple_spinner_item, months);
 			spinner.setAdapter(adapter);
+			spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			setDays(31);
+				@Override
+				public void onItemSelected(AdapterView<?> adapter, View view,
+						int position, long id) {
+					// TODO Auto-generated method stub
+					int[] dayLimit = getResources().getIntArray(R.array.days);
+					setDays(dayLimit[position]);
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					// TODO Auto-generated method stub
+				}
+			});
 
 			return rootView;
 		}
