@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -130,10 +131,18 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		private void showToast(String text) {
+			editText.setText("");
 			if (checkBox.isChecked()) {
 				text = "***********";
 			}
 			Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+			
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), MessageActivity.class);
+			intent.putExtra("text", text);
+			intent.putExtra("checkbox", checkBox.isChecked());
+			getActivity().startActivity(intent);
+			
 		}
 	}
 
