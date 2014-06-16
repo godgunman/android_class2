@@ -1,5 +1,8 @@
 package com.example.simpleui;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -29,6 +32,10 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		Parse.initialize(this, "6GIweBfY6S45aUHHhzAkw4cgo6Cb7PlvUyYYwJFs",
+				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
+
 		setContentView(R.layout.activity_main);
 
 		if (savedInstanceState == null) {
@@ -88,7 +95,7 @@ public class MainActivity extends ActionBarActivity {
 
 			editText.setText(sp.getString("text", ""));
 			checkBox.setChecked(sp.getBoolean("checkbox", false));
-			
+
 			button.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -135,14 +142,19 @@ public class MainActivity extends ActionBarActivity {
 			if (checkBox.isChecked()) {
 				text = "***********";
 			}
+
+			ParseObject testObject = new ParseObject("Message");
+			testObject.put("text", text);
+			testObject.saveInBackground();
+
 			Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
-			
+
 			Intent intent = new Intent();
 			intent.setClass(getActivity(), MessageActivity.class);
 			intent.putExtra("text", text);
 			intent.putExtra("checkbox", checkBox.isChecked());
 			getActivity().startActivity(intent);
-			
+
 		}
 	}
 
