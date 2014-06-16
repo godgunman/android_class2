@@ -1,9 +1,5 @@
 package com.example.simpleui;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import com.parse.FindCallback;
@@ -11,26 +7,38 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import android.app.Activity;
 import android.app.ListActivity;
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 public class MessageActivity extends ListActivity {
 
+	private ProgressDialog progress;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_message);
 
-		String text = getIntent().getStringExtra("text");
-		boolean isChecked = getIntent().getBooleanExtra("checkbox", false);
-
+		/*
+		progress = new ProgressDialog(this);
+		progress.setTitle("Loading...");
+		progress.show();
+		*/
+		
 		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Message");
+		
+		/*
+		try {
+			List<ParseObject> result = query.find();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		*/
+
 		query.findInBackground(new FindCallback<ParseObject>() {
 			@Override
 			public void done(List<ParseObject> result, ParseException e) {
@@ -43,6 +51,7 @@ public class MessageActivity extends ListActivity {
 						MessageActivity.this,
 						android.R.layout.simple_list_item_1, data);
 				setListAdapter(adapter);
+//				progress.dismiss();
 			}
 		});
 	}

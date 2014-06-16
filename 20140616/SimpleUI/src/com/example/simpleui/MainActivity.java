@@ -147,24 +147,21 @@ public class MainActivity extends ActionBarActivity {
 
 			ParseObject testObject = new ParseObject("Message");
 			testObject.put("text", text);
+			testObject.put("checkBox", checkBox.isChecked());
 			testObject.saveInBackground(new SaveCallback() {
 				@Override
 				public void done(ParseException e) {
 					if (e == null) {
 						Log.d("debug", "ok");
+						Intent intent = new Intent();
+						intent.setClass(getActivity(), MessageActivity.class);
+						getActivity().startActivity(intent);
 					}
 				}
 			});
 			Log.d("debug", "after saveInBackground");
 
 			Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
-
-			Intent intent = new Intent();
-			intent.setClass(getActivity(), MessageActivity.class);
-			intent.putExtra("text", text);
-			intent.putExtra("checkbox", checkBox.isChecked());
-			getActivity().startActivity(intent);
-
 		}
 	}
 
