@@ -4,6 +4,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.PushService;
 import com.parse.SaveCallback;
 
@@ -40,8 +41,9 @@ public class MainActivity extends ActionBarActivity {
 		Parse.initialize(this, "6GIweBfY6S45aUHHhzAkw4cgo6Cb7PlvUyYYwJFs",
 				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
 		PushService.setDefaultPushCallback(this, MainActivity.class);
+		PushService.subscribe(this, "all", MainActivity.class);
 		ParseInstallation.getCurrentInstallation().saveInBackground();
-		
+
 		setContentView(R.layout.activity_main);
 
 		if (savedInstanceState == null) {
@@ -144,28 +146,34 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		private void showToast(String text) {
+
 			editText.setText("");
 			if (checkBox.isChecked()) {
 				text = "***********";
 			}
+			ParsePush push = new ParsePush();
+			push.setMessage(text);
+			push.setChannel("all");
+			push.sendInBackground();
 
-			ParseObject testObject = new ParseObject("Message");
-			testObject.put("text", text);
-			testObject.put("checkBox", checkBox.isChecked());
-			testObject.saveInBackground(new SaveCallback() {
-				@Override
-				public void done(ParseException e) {
-					if (e == null) {
-						Log.d("debug", "ok");
-						Intent intent = new Intent();
-						intent.setClass(getActivity(), MessageActivity.class);
-						getActivity().startActivity(intent);
-					}
-				}
-			});
-			Log.d("debug", "after saveInBackground");
-
-			Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+			//
+			// ParseObject testObject = new ParseObject("Message");
+			// testObject.put("text", text);
+			// testObject.put("checkBox", checkBox.isChecked());
+			// testObject.saveInBackground(new SaveCallback() {
+			// @Override
+			// public void done(ParseException e) {
+			// if (e == null) {
+			// Log.d("debug", "ok");
+			// Intent intent = new Intent();
+			// intent.setClass(getActivity(), MessageActivity.class);
+			// getActivity().startActivity(intent);
+			// }
+			// }
+			// });
+			// Log.d("debug", "after saveInBackground");
+			//
+			// Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
 		}
 	}
 
