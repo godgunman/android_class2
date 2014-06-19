@@ -11,7 +11,7 @@ public class MessageDBHelper extends SQLiteOpenHelper {
 	private static final String TABLE_NAME = "message";
 
 	private static final int DATABASE_VERSION = 1;
-	private static final String CREATE_TABLE = "CREATE TABLE people("
+	private static final String CREATE_TABLE = "CREATE TABLE message("
 			+ "id INTEGER, " + "text TEXT, " + "isEncrypt INTEGER, "
 			+ "PRIMARY KEY(id));";
 
