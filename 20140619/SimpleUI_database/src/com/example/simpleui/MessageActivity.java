@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,41 +28,13 @@ public class MessageActivity extends Activity {
 		MessageDBHelper messageDBHelper = new MessageDBHelper(this);
 		messageDBHelper.insert(new Message(text, isChecked));
 
-		writeFile(text);
+		List<Message> messages = messageDBHelper.getMessages();
+		String result = "";
+		for (Message message : messages) {
+			result += message.text + "," + message.isEncrypt + "\n";
+		}
 
 		textView = (TextView) findViewById(R.id.textView1);
-		textView.setText(readFile());
-	}
-
-	private void writeFile(String text) {
-		try {
-			FileOutputStream fos = openFileOutput("history.txt",
-					Context.MODE_APPEND);
-			text += "\n";
-			fos.write(text.getBytes());
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private String readFile() {
-		try {
-			FileInputStream fis = openFileInput("history.txt");
-			byte[] buffer = new byte[1024];
-			fis.read(buffer);
-			return new String(buffer);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "";
+		textView.setText(result);
 	}
 }

@@ -1,7 +1,11 @@
 package com.example.simpleui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -37,4 +41,16 @@ public class MessageDBHelper extends SQLiteOpenHelper {
 		db.insert(TABLE_NAME, null, values);
 	}
 
+	public List<Message> getMessages() {
+		SQLiteDatabase db = getReadableDatabase();
+		String sql = "SELECT * FROM " + TABLE_NAME;
+
+		Cursor cursor = db.rawQuery(sql, null);
+		List<Message> result = new ArrayList<Message>();
+
+		while (cursor.moveToNext()) {
+			result.add(new Message(cursor.getString(1), cursor.getInt(2) != 0));
+		}
+		return result;
+	}
 }
