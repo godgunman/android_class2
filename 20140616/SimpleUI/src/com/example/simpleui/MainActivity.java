@@ -2,7 +2,9 @@ package com.example.simpleui;
 
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.PushService;
 import com.parse.SaveCallback;
 
 import android.support.v7.app.ActionBarActivity;
@@ -37,7 +39,9 @@ public class MainActivity extends ActionBarActivity {
 
 		Parse.initialize(this, "6GIweBfY6S45aUHHhzAkw4cgo6Cb7PlvUyYYwJFs",
 				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
-
+		PushService.setDefaultPushCallback(this, MainActivity.class);
+		ParseInstallation.getCurrentInstallation().saveInBackground();
+		
 		setContentView(R.layout.activity_main);
 
 		if (savedInstanceState == null) {
