@@ -54,5 +54,6 @@ public class MessageActivity extends ListActivity {
 //				progress.dismiss();
 			}
 		});
+		
 	}
 }
