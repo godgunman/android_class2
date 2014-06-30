@@ -1,6 +1,11 @@
 package com.example.takephoto;
 
+import java.io.ByteArrayOutputStream;
+
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.SaveCallback;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -81,9 +86,24 @@ public class MainActivity extends ActionBarActivity {
 
 			if (resultCode == RESULT_OK) {
 				Bitmap bitmap = intent.getParcelableExtra("data");
+				saveToParse(bitmap);
 				imageView.setImageBitmap(bitmap);
 			}
 		}
+	}
+
+	private void saveToParse(Bitmap bitmap) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+		byte[] bytes = baos.toByteArray();
+		final ParseFile file = new ParseFile("photo.png", bytes);
+		file.saveInBackground(new SaveCallback() {
+			
+			@Override
+			public void done(ParseException e) {
+				Log.d("debug", file.getUrl());
+			}
+		});
 	}
 
 	/**
