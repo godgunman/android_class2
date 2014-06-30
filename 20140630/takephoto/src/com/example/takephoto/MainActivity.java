@@ -2,6 +2,9 @@ package com.example.takephoto;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -71,7 +74,7 @@ public class MainActivity extends ActionBarActivity {
 			Log.d("debug", "action take photo");
 
 			outputFile = Uri.fromFile(getTargetFile());
-			
+
 			Intent intent = new Intent();
 			intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFile);
@@ -92,11 +95,12 @@ public class MainActivity extends ActionBarActivity {
 					+ ", resultCode=" + resultCode);
 			Toast.makeText(this, "from camera", Toast.LENGTH_SHORT).show();
 
-			if (resultCode == RESULT_OK) {				
-//				Bitmap bitmap = intent.getParcelableExtra("data");
-//				saveToParse(bitmap);
-//				imageView.setImageBitmap(bitmap);
+			if (resultCode == RESULT_OK) {
+				// Bitmap bitmap = intent.getParcelableExtra("data");
+				// saveToParse(bitmap);
+				// imageView.setImageBitmap(bitmap);
 				imageView.setImageURI(outputFile);
+				//saveToParse(getTargetFile());
 			}
 		}
 	}
@@ -108,6 +112,42 @@ public class MainActivity extends ActionBarActivity {
 			pictureDir.mkdirs();
 		}
 		return new File(pictureDir, "photo.png");
+	}
+
+	private void saveToParse(File file) {
+		byte[] data = new byte[(int) file.length()];
+
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			// fis.read(data);
+
+			int offset = 0;
+			int numRead = 0;
+			while (true) {
+				numRead = fis.read(data, offset, data.length - offset);
+				if (numRead == -1) {
+					break;
+				}
+				offset += numRead;
+			}
+
+			final ParseFile parsefile = new ParseFile("photo.png", data);
+			ParseObject object = new ParseObject("photo");
+			object.put("file", parsefile);
+			object.saveInBackground(new SaveCallback() {
+				@Override
+				public void done(ParseException e) {
+					Log.d("debug", parsefile.getUrl());
+				}
+			});
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	private void saveToParse(Bitmap bitmap) {
