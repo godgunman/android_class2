@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
 				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
 		PushService.setDefaultPushCallback(this, MainActivity.class);
 		PushService.subscribe(this, "all", MainActivity.class);
-		ParseInstallation.getCurrentInstallation().saveInBackground();
+	//	ParseInstallation.getCurrentInstallation().saveInBackground();
 
 		setContentView(R.layout.activity_main);
 
