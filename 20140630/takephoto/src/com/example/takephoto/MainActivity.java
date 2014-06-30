@@ -1,5 +1,7 @@
 package com.example.takephoto;
 
+import com.parse.Parse;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -27,6 +29,10 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		Parse.initialize(this, "6GIweBfY6S45aUHHhzAkw4cgo6Cb7PlvUyYYwJFs",
+				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
+
 		setContentView(R.layout.activity_main);
 
 		if (savedInstanceState == null) {
