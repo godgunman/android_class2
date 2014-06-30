@@ -3,6 +3,7 @@ package com.example.takephoto;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,9 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.os.Build;
+import android.provider.MediaStore;
 
 public class MainActivity extends ActionBarActivity {
+
+	private static final int REQUEST_CODE_TAKE_PHOTO = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +48,26 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		} else if (id == R.id.action_take_photo) {
 			Log.d("debug", "action take photo");
+
+			Intent intent = new Intent();
+			intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+			startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
+
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent intent) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, intent);
+
+		if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
+			Log.d("debug", "onActivityResult, requestCode=" + requestCode
+					+ ", resultCode=" + resultCode);
+			Toast.makeText(this, "from camera", Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	/**
