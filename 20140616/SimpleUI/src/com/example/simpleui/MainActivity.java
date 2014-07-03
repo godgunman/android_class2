@@ -194,9 +194,13 @@ public class MainActivity extends ActionBarActivity {
 			if (checkBox.isChecked()) {
 				text = "***********";
 			}
+
+			String deviceId = (String) spinner.getSelectedItem();
+
 			ParsePush push = new ParsePush();
 			push.setMessage(text);
-			push.setChannel("all");
+			// push.setChannel("all");
+			push.setChannel("id_" + deviceId);
 			push.sendInBackground();
 
 			//
