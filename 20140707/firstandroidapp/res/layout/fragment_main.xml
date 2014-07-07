@@ -9,6 +9,7 @@
     tools:context="com.firstandroidapp.MainActivity$PlaceholderFragment" >
 
     <TextView
+        android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
