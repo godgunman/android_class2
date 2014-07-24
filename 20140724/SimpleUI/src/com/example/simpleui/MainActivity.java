@@ -3,12 +3,15 @@ package com.example.simpleui;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -23,17 +26,35 @@ public class MainActivity extends ActionBarActivity {
 		editText = (EditText) findViewById(R.id.editText1);
 		button = (Button) findViewById(R.id.button1);
 
-		editText.setText("hell world");
 		button.setText("submit");
 		button.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				String text = editText.getText().toString();
-				Log.d("debug", "click! text=" + text);
+				send();
 			}
 		});
 
+		editText.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+				if (keyCode == KeyEvent.KEYCODE_ENTER
+						&& event.getAction() == KeyEvent.ACTION_DOWN) {
+					send();
+					return true;
+				}
+
+				return false;
+			}
+		});
+	}
+
+	private void send() {
+		String text = editText.getText().toString();
+		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+		editText.setText("");
 	}
 
 	@Override
