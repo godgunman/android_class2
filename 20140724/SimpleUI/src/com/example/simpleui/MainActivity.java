@@ -1,7 +1,5 @@
 package com.example.simpleui;
 
-import java.util.zip.Checksum;
-
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +14,19 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements OnClickListener{
 
 	private EditText editText;
-	private Button button;
+	private Button button, button3, button4;
 	private CheckBox checkBox;
+
+	private OnClickListener onClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			send();
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,8 @@ public class MainActivity extends ActionBarActivity {
 
 		editText = (EditText) findViewById(R.id.editText1);
 		button = (Button) findViewById(R.id.button1);
+		button3 = (Button) findViewById(R.id.button3);
+		button4 = (Button) findViewById(R.id.button4);
 		checkBox = (CheckBox) findViewById(R.id.checkBox1);
 
 		button.setText("submit");
@@ -40,6 +48,9 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 
+		button3.setOnClickListener(onClickListener);
+		button4.setOnClickListener(this);
+		
 		editText.setOnKeyListener(new OnKeyListener() {
 
 			@Override
@@ -54,6 +65,10 @@ public class MainActivity extends ActionBarActivity {
 				return false;
 			}
 		});
+	}
+
+	public void click(View view) {
+		send();
 	}
 
 	private void send() {
@@ -83,5 +98,10 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onClick(View v) {
+		send();
 	}
 }
