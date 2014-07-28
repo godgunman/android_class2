@@ -14,7 +14,8 @@
         android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" >
+        android:ems="10"
+        android:hint="To" >
 
         <requestFocus />
     </EditText>
@@ -23,18 +24,23 @@
         android:id="@+id/editText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" />
+        android:ems="10"
+        android:hint="Subject" />
 
     <EditText
         android:id="@+id/editText3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10" />
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="Message" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_gravity="right"
+        android:text="Send" />
 
 </LinearLayout>
