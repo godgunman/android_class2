@@ -16,7 +16,7 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		String[] months = new String[] { "1", "2", "3" };
+		String[] months = getResources().getStringArray(R.array.month);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, months);
 
