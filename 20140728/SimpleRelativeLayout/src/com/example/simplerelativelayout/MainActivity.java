@@ -9,7 +9,7 @@ import android.widget.Spinner;
 
 public class MainActivity extends ActionBarActivity {
 
-	private Spinner spinner1;
+	private Spinner spinner1, spinner2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,23 @@ public class MainActivity extends ActionBarActivity {
 
 		spinner1 = (Spinner) findViewById(R.id.spinner1);
 		spinner1.setAdapter(adapter);
+		
+		spinner2 = (Spinner) findViewById(R.id.spinner2);
+		setDays(31);
 	}
+	
+	private void setDays(int limit) {
+		String[] days = new String[limit];
+		for (int i = 0 ; i < limit; i++) {
+			days[i] = String.valueOf(i+1);			
+		}
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, days);
+			
+		spinner2.setAdapter(adapter);
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
