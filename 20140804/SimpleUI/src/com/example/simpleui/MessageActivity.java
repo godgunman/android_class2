@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.parse.ParseObject;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -24,6 +26,10 @@ public class MessageActivity extends ActionBarActivity {
 		String text = getIntent().getStringExtra("text");
 		writeFile(text);
 		textView.setText(readFile());
+		
+		ParseObject testObject = new ParseObject("TestObject");
+		testObject.put("foo", "bar");
+		testObject.saveInBackground();
 	}
 
 	private void writeFile(String text) {

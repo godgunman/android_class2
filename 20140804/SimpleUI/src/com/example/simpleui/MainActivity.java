@@ -1,5 +1,7 @@
 package com.example.simpleui;
 
+import com.parse.Parse;
+
 import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +42,9 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Parse.initialize(this, "hCJ3YM593qsoFGt3CNVa0XRECus3Vbrz56HdyUvD", "WRUIsQkcyj0fgv8inoF6hSeo0rftbr2WTKPWLE09");
+
 		setContentView(R.layout.activity_main);
 
 		pref = getSharedPreferences("settings", Context.MODE_PRIVATE);
