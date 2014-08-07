@@ -1,15 +1,15 @@
 package com.example.simpleui;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.List;
 
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 public class MessageActivity extends ActionBarActivity {
@@ -22,47 +22,34 @@ public class MessageActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_message);
 
 		textView = (TextView) findViewById(R.id.textView1);
-
 		String text = getIntent().getStringExtra("text");
-		writeFile(text);
-		textView.setText(readFile());
-		
+
 		ParseObject messageObject = new ParseObject("Message");
 		messageObject.put("text", text);
-		messageObject.saveInBackground();
+		messageObject.saveInBackground(new SaveCallback() {
+
+			@Override
+			public void done(ParseException e) {
+				Log.d("debug", "save done");
+				loadMessagsFromParse();
+			}
+		});
+		Log.d("debug", "after saveInbackground");
 	}
 
-	private void writeFile(String text) {
+	private void loadMessagsFromParse() {
+		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Message");
 		try {
-			text += "\n";
-			FileOutputStream fos = openFileOutput("history.txt",
-					Context.MODE_APPEND);
-			fos.write(text.getBytes());
-			fos.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private String readFile() {
-		FileInputStream fis;
-		try {
-			fis = openFileInput("history.txt");
-			byte[] buffer = new byte[1024];
-			fis.read(buffer);
-			fis.close();
-
-			return new String(buffer);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+			List<ParseObject> messages = query.find();
+			String text = "";
+			for (ParseObject message : messages) {
+				text += message.getString("text") + "\n";
+			}
+			textView.setText(text);
+		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+
 	}
 }
