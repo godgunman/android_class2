@@ -1,8 +1,14 @@
 package com.example.simpleui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.PushService;
 
 import android.support.v7.app.ActionBarActivity;
@@ -15,9 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +35,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private Button button, button3, button4;
 	private CheckBox checkBox;
 	private TextView textView;
+	private Spinner spinner;
 
 	private OnClickListener onClickListener = new OnClickListener() {
 
@@ -53,6 +62,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		button4 = (Button) findViewById(R.id.button4);
 		checkBox = (CheckBox) findViewById(R.id.checkBox1);
 		textView = (TextView) findViewById(R.id.textView1);
+		spinner = (Spinner) findViewById(R.id.spinner1);
 
 		textView.setText(getDeviceId());
 
@@ -84,10 +94,31 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		});
 
 		uploadDeviceId();
+		loadDeviceId();
 	}
 
 	public void click(View view) {
 		send();
+	}
+
+	private void loadDeviceId() {
+		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("DeviceId");
+		query.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> objects, ParseException e) {
+				// TODO Auto-generated method stub
+				List<String> ids = new ArrayList<String>();
+				for (ParseObject object : objects) {
+					ids.add(object.getString("device_id"));
+				}
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						MainActivity.this,
+						android.R.layout.simple_spinner_item, ids);
+				spinner.setAdapter(adapter);
+			}
+		});
+
 	}
 
 	private void uploadDeviceId() {
@@ -109,8 +140,10 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
 		editText.setText("");
 
+		String channel = (String) spinner.getSelectedItem();
+
 		ParsePush push = new ParsePush();
-		push.setChannel("all");
+		push.setChannel("id_" + channel);
 		push.setMessage(text);
 		push.sendInBackground();
 	}
