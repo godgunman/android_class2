@@ -144,16 +144,13 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		editText.setText("");
 
 		String channel = (String) spinner.getSelectedItem();
-
-		// ParsePush push = new ParsePush();
-		// push.setChannel("id_" + channel);
-		// push.setMessage(text);
-		// push.sendInBackground();
-
 		JSONObject data;
 		try {
-			data = new JSONObject(
-					"{\"action\": \"com.example.UPDATE_STATUS\",\"name\": \"Vaughn\",\"newsItem\": \"Man bites dog\"}");
+			data = new JSONObject();
+			data.put("action", "com.example.UPDATE_STATUS");
+			data.put("text", text);
+			data.put("from", getDeviceId());
+			
 			ParsePush push = new ParsePush();
 			push.setChannel("id_" + channel);
 			push.setData(data);

@@ -17,8 +17,8 @@ public class MyCustomReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		try {
 			String action = intent.getAction();
-			String channel = intent.getExtras().getString("com.parse.Channel");
-			JSONObject json = new JSONObject(intent.getExtras().getString(
+			String channel = intent.getStringExtra("com.parse.Channel");
+			JSONObject json = new JSONObject(intent.getStringExtra(
 					"com.parse.Data"));
 
 			Log.d(TAG, "got action " + action + " on channel " + channel
