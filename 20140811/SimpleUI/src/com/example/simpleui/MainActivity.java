@@ -155,7 +155,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			data = new JSONObject(
 					"{\"action\": \"com.example.UPDATE_STATUS\",\"name\": \"Vaughn\",\"newsItem\": \"Man bites dog\"}");
 			ParsePush push = new ParsePush();
-			push.setChannel(channel);
+			push.setChannel("id_" + channel);
 			push.setData(data);
 			push.sendInBackground();
 
