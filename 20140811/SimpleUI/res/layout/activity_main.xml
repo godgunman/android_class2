@@ -76,4 +76,12 @@
         android:layout_below="@+id/textView1"
         android:layout_toLeftOf="@+id/button2" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spinner1"
+        android:layout_below="@+id/spinner1"
+        android:text="Message:" />
+
 </RelativeLayout>

@@ -39,6 +39,9 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private CheckBox checkBox;
 	private TextView textView;
 	private Spinner spinner;
+	
+	//static is very bad.
+	public static TextView textView2;
 
 	private OnClickListener onClickListener = new OnClickListener() {
 
@@ -65,6 +68,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		button4 = (Button) findViewById(R.id.button4);
 		checkBox = (CheckBox) findViewById(R.id.checkBox1);
 		textView = (TextView) findViewById(R.id.textView1);
+		textView2 = (TextView) findViewById(R.id.textView2);
 		spinner = (Spinner) findViewById(R.id.spinner1);
 
 		textView.setText(getDeviceId());
