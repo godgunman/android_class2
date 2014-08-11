@@ -3,6 +3,9 @@ package com.example.simpleui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -142,10 +145,25 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		String channel = (String) spinner.getSelectedItem();
 
-		ParsePush push = new ParsePush();
-		push.setChannel("id_" + channel);
-		push.setMessage(text);
-		push.sendInBackground();
+		// ParsePush push = new ParsePush();
+		// push.setChannel("id_" + channel);
+		// push.setMessage(text);
+		// push.sendInBackground();
+
+		JSONObject data;
+		try {
+			data = new JSONObject(
+					"{\"action\": \"com.example.UPDATE_STATUS\",\"name\": \"Vaughn\",\"newsItem\": \"Man bites dog\"}");
+			ParsePush push = new ParsePush();
+			push.setChannel(channel);
+			push.setData(data);
+			push.sendInBackground();
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
