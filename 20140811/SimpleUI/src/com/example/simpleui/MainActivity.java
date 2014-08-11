@@ -1,10 +1,13 @@
 package com.example.simpleui;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.PushService;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -15,6 +18,7 @@ import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements OnClickListener {
@@ -22,6 +26,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private EditText editText;
 	private Button button, button3, button4;
 	private CheckBox checkBox;
+	private TextView textView;
 
 	private OnClickListener onClickListener = new OnClickListener() {
 
@@ -39,12 +44,17 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		Parse.initialize(this, "6GIweBfY6S45aUHHhzAkw4cgo6Cb7PlvUyYYwJFs",
 				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
 		PushService.setDefaultPushCallback(this, MainActivity.class);
+		PushService.subscribe(this, "all", MainActivity.class);
+		PushService.subscribe(this, "id_" + getDeviceId(), MainActivity.class);
 
 		editText = (EditText) findViewById(R.id.editText1);
 		button = (Button) findViewById(R.id.button1);
 		button3 = (Button) findViewById(R.id.button3);
 		button4 = (Button) findViewById(R.id.button4);
 		checkBox = (CheckBox) findViewById(R.id.checkBox1);
+		textView = (TextView) findViewById(R.id.textView1);
+
+		textView.setText(getDeviceId());
 
 		button.setText("submit");
 		button.setOnClickListener(new OnClickListener() {
@@ -72,10 +82,22 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 				return false;
 			}
 		});
+
+		uploadDeviceId();
 	}
 
 	public void click(View view) {
 		send();
+	}
+
+	private void uploadDeviceId() {
+		ParseObject object = new ParseObject("DeviceId");
+		object.put("device_id", getDeviceId());
+		object.saveInBackground();
+	}
+
+	private String getDeviceId() {
+		return Secure.getString(getContentResolver(), Secure.ANDROID_ID);
 	}
 
 	private void send() {
@@ -86,6 +108,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
 		editText.setText("");
+
+		ParsePush push = new ParsePush();
+		push.setChannel("all");
+		push.setMessage(text);
+		push.sendInBackground();
 	}
 
 	@Override
