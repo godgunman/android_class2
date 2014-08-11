@@ -1,0 +1,114 @@
+package com.example.simpleui;
+
+import com.parse.Parse;
+import com.parse.PushService;
+
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends ActionBarActivity implements OnClickListener {
+
+	private EditText editText;
+	private Button button, button3, button4;
+	private CheckBox checkBox;
+
+	private OnClickListener onClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			send();
+		}
+	};
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		Parse.initialize(this, "6GIweBfY6S45aUHHhzAkw4cgo6Cb7PlvUyYYwJFs",
+				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
+		PushService.setDefaultPushCallback(this, MainActivity.class);
+
+		editText = (EditText) findViewById(R.id.editText1);
+		button = (Button) findViewById(R.id.button1);
+		button3 = (Button) findViewById(R.id.button3);
+		button4 = (Button) findViewById(R.id.button4);
+		checkBox = (CheckBox) findViewById(R.id.checkBox1);
+
+		button.setText("submit");
+		button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				send();
+			}
+		});
+
+		button3.setOnClickListener(onClickListener);
+		button4.setOnClickListener(this);
+
+		editText.setOnKeyListener(new OnKeyListener() {
+
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+				if (keyCode == KeyEvent.KEYCODE_ENTER
+						&& event.getAction() == KeyEvent.ACTION_DOWN) {
+					send();
+					return true;
+				}
+
+				return false;
+			}
+		});
+	}
+
+	public void click(View view) {
+		send();
+	}
+
+	private void send() {
+		String text = editText.getText().toString();
+		if (checkBox.isChecked()) {
+			text = "**********";
+		}
+
+		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+		editText.setText("");
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onClick(View v) {
+		send();
+	}
+}
