@@ -1,5 +1,8 @@
 package com.example.mymaps;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,10 +11,17 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
 
-    @Override
+    private SupportMapFragment mapFramgent;
+	private GoogleMap googleMap;
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+		mapFramgent = (SupportMapFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.fragment1);
+		googleMap = mapFramgent.getMap();
     }
 
 
