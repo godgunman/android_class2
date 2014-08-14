@@ -8,12 +8,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class MainActivity extends ActionBarActivity {
 
 	private TextView textView;
@@ -21,12 +28,18 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+				.permitAll().build();
+		StrictMode.setThreadPolicy(policy);
+
 		setContentView(R.layout.activity_main);
 
 		textView = (TextView) findViewById(R.id.textView1);
 
-		String content = fetchWeb("http://www.ntu.edu.tw/");
+		String content = fetchWeb("http://maps.googleapis.com/maps/api/geocode/json?address=%E5%8F%B0%E5%8C%97%E5%B8%82%E7%BE%85%E6%96%AF%E7%A6%8F%E8%B7%AF%E5%9B%9B%E6%AE%B5%E4%B8%80%E8%99%9F&sensor=true");
 		textView.setText(content);
+
 	}
 
 	@Override
@@ -48,12 +61,23 @@ public class MainActivity extends ActionBarActivity {
 			while ((line = bufferReader.readLine()) != null) {
 				content += line;
 			}
-			return content;
+			JSONObject object = new JSONObject(content);
+			JSONObject location = object.getJSONArray("results")
+					.getJSONObject(0).getJSONObject("geometry")
+					.getJSONObject("location");
+
+			String lat = location.getString("lat");
+			String lng = location.getString("lng");
+
+			return lat + "," + lng;
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
