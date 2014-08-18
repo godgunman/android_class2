@@ -1,10 +1,16 @@
 package com.example.takephoto;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -16,12 +22,14 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
 public class MainActivity extends ActionBarActivity {
 
 	private static final int REQUEST_CODE_TAKE_PHOTO = 100;
 	private ImageView imageView;
+	private Uri outputFile;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +58,12 @@ public class MainActivity extends ActionBarActivity {
 		if (id == R.id.action_settings) {
 			return true;
 		} else if (id == R.id.action_take_photo) {
+
+			outputFile = Uri.fromFile(getTargetFile());
+
 			Intent intent = new Intent();
 			intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFile);
 			startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
 
 			return true;
@@ -64,13 +76,59 @@ public class MainActivity extends ActionBarActivity {
 		if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
 			Log.d("debug", "camera back");
 			if (resultCode == RESULT_OK) {
-				Bitmap bitmap = data.getParcelableExtra("data");
-				imageView.setImageBitmap(bitmap);
-				saveToParse(bitmap);
+				// Bitmap bitmap = data.getParcelableExtra("data");
+				// imageView.setImageBitmap(bitmap);
+				// saveToParse(bitmap);
+				imageView.setImageURI(outputFile);
+
+				File file = getTargetFile();
+				saveToParse(file);
+				Log.d("debug", file.getPath());
 			}
 		}
 
 		super.onActivityResult(requestCode, requestCode, data);
+	}
+
+	private File getTargetFile() {
+		File dcimDir = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+		if (dcimDir.exists() == false) {
+			dcimDir.mkdirs();
+		}
+		return new File(dcimDir, "photo.png");
+	}
+
+	private void saveToParse(File file) {
+		byte[] data = new byte[(int) file.length()];
+
+		try {
+			FileInputStream fis = new FileInputStream(file);
+
+			int offset = 0;
+			int numRead = 0;
+
+			while (true) {
+				numRead = fis.read(data, offset, data.length - offset);
+				if (numRead == -1 || numRead == 0) {
+					break;
+				}
+				offset += numRead;
+			}
+			fis.close();
+
+			final ParseFile parseFile = new ParseFile("photo.png", data);
+			ParseObject parseObject = new ParseObject("file");
+			parseObject.put("file", parseFile);
+			parseObject.saveInBackground();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void saveToParse(Bitmap bitmap) {
