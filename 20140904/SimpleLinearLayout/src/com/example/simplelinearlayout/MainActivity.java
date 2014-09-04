@@ -2,6 +2,7 @@ package com.example.simplelinearlayout;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -20,10 +21,32 @@ public class MainActivity extends ActionBarActivity {
 		// setContentView(R.layout.activity_main);
 
 		linearLayout = new LinearLayout(this);
+		linearLayout.setOrientation(LinearLayout.VERTICAL);
+		linearLayout.setPadding(15, 15, 15, 15);
+
 		editText = new EditText(this);
+		editText.setHint("To");
+
 		editText2 = new EditText(this);
+		editText2.setHint("Subject");
+
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT, 0);
+		layoutParams.weight = 1;
+
 		editText3 = new EditText(this);
+		editText3.setHint("Message");
+		editText3.setGravity(Gravity.TOP);
+		editText3.setLayoutParams(layoutParams);
+
+		LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		layoutParams2.gravity = Gravity.RIGHT;
+
 		button = new Button(this);
+		button.setText("Send");
+		button.setLayoutParams(layoutParams2);
 
 		linearLayout.addView(editText);
 		linearLayout.addView(editText2);
