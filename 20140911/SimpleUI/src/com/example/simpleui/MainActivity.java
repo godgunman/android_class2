@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -27,9 +28,20 @@ public class MainActivity extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				Log.d("debug", "click");
+				Log.d("debug", "click from button1");
+				sendText();
 			}
 		});
+	}
+
+	public void button2Click(View view) {
+		Log.d("debug", "click from button2");
+		sendText();
+	}
+
+	public void sendText() {
+		String text = editText.getText().toString();
+		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
