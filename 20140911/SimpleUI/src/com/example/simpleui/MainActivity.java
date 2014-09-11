@@ -22,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
 	private EditText editText;
 	private Button button;
 	private CheckBox checkBox;
-	
+
 	private SharedPreferences sp;
 	private Editor editor;
 
@@ -37,8 +37,7 @@ public class MainActivity extends ActionBarActivity {
 
 		sp = getSharedPreferences("settings", Context.MODE_PRIVATE);
 		editor = sp.edit();
-		
-		
+
 		button.setText("Send");
 		button.setOnClickListener(new OnClickListener() {
 
@@ -54,11 +53,11 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				Log.d("debug", "keyCode: " + keyCode);
-				
+
 				String text = editText.getText().toString();
 				editor.putString("text", text);
 				editor.commit();
-				
+
 				if (keyCode == KeyEvent.KEYCODE_ENTER
 						&& event.getAction() == KeyEvent.ACTION_DOWN) {
 					sendText();
@@ -67,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
 				return false;
 			}
 		});
+		editText.setText(sp.getString("text", ""));
 
 	}
 
