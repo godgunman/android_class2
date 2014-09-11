@@ -1,6 +1,9 @@
 package com.example.simpleui;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,6 +22,9 @@ public class MainActivity extends ActionBarActivity {
 	private EditText editText;
 	private Button button;
 	private CheckBox checkBox;
+	
+	private SharedPreferences sp;
+	private Editor editor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,10 @@ public class MainActivity extends ActionBarActivity {
 		button = (Button) findViewById(R.id.button1);
 		checkBox = (CheckBox) findViewById(R.id.checkBox1);
 
+		sp = getSharedPreferences("settings", Context.MODE_PRIVATE);
+		editor = sp.edit();
+		
+		
 		button.setText("Send");
 		button.setOnClickListener(new OnClickListener() {
 
@@ -44,9 +54,15 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				Log.d("debug", "keyCode: " + keyCode);
+				
+				String text = editText.getText().toString();
+				editor.putString("text", text);
+				editor.commit();
+				
 				if (keyCode == KeyEvent.KEYCODE_ENTER
 						&& event.getAction() == KeyEvent.ACTION_DOWN) {
 					sendText();
+					return true;
 				}
 				return false;
 			}
@@ -55,7 +71,13 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void button2Click(View view) {
-		Log.d("debug", "click from button2");
+		int id = view.getId();
+
+		if (id == R.id.button2)
+			Log.d("debug", "click from button2");
+		else if (id == R.id.button3)
+			Log.d("debug", "click from button3");
+
 		sendText();
 	}
 
