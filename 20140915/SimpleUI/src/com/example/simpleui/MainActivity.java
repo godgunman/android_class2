@@ -106,6 +106,7 @@ public class MainActivity extends ActionBarActivity {
 
 		Intent intent = new Intent();
 		intent.setClass(this, MessageActivity.class);
+		intent.putExtra("text", text);
 		startActivity(intent);
 	}
 
