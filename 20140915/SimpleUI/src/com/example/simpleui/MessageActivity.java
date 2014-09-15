@@ -8,11 +8,12 @@ import java.io.IOException;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MessageActivity extends Activity {
 
-	private TextView textView;
+	private ListView listView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,17 +22,22 @@ public class MessageActivity extends Activity {
 
 		setContentView(R.layout.activity_message);
 
-		textView = (TextView) findViewById(R.id.textView1);
+		listView = (ListView) findViewById(R.id.listView1);
 
 		String text = getIntent().getStringExtra("text");
 
 		writeFile(text);
-		textView.setText(readFile());
+		String data = readFile();
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, data.split("\n"));
+		listView.setAdapter(adapter);
+
 	}
 
 	// file location: data/data/com.example.simpleui/files/histroy.txt
 	private void writeFile(String text) {
-		
+
 		text += "\n";
 
 		try {
