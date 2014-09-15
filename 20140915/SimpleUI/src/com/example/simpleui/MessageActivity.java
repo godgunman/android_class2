@@ -1,9 +1,9 @@
 package com.example.simpleui;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,14 +24,15 @@ public class MessageActivity extends Activity {
 		textView = (TextView) findViewById(R.id.textView1);
 
 		String text = getIntent().getStringExtra("text");
-		textView.setText(text);
 
 		writeFile(text);
-
+		textView.setText(readFile());
 	}
 
 	// file location: data/data/com.example.simpleui/files/histroy.txt
 	private void writeFile(String text) {
+		
+		text += "\n";
 
 		try {
 			FileOutputStream fos = openFileOutput("history.txt",
@@ -44,5 +45,21 @@ public class MessageActivity extends Activity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private String readFile() {
+		try {
+			FileInputStream fis = openFileInput("history.txt");
+			byte[] buffer = new byte[1024];
+			fis.read(buffer);
+			fis.close();
+			return new String(buffer);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
