@@ -2,6 +2,7 @@ package com.example.simpleui;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -68,18 +69,18 @@ public class MainActivity extends ActionBarActivity {
 				return false;
 			}
 		});
-		
+
 		checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
+
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
 				// TODO Auto-generated method stub
 				editor.putBoolean("checked", isChecked);
 				editor.commit();
 			}
 		});
-		
-		
+
 		editText.setText(sp.getString("text", ""));
 		checkBox.setChecked(sp.getBoolean("checked", false));
 	}
@@ -102,6 +103,10 @@ public class MainActivity extends ActionBarActivity {
 
 		Toast.makeText(this, text, Toast.LENGTH_LONG).show();
 		editText.setText("");
+
+		Intent intent = new Intent();
+		intent.setClass(this, MessageActivity.class);
+		startActivity(intent);
 	}
 
 	@Override
