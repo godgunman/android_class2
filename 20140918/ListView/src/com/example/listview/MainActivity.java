@@ -9,12 +9,24 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
 	private ListView listView;
+
+	final private static String[] LINKS = {
+			"http://www.google.com/doodles/honinbo-shusakus-185th-birthday",
+			"http://www.google.com/doodles/denmark-national-day-2014",
+			"http://www.google.com/doodles/alejandro-obregons-93rd-birthday",
+			"http://www.google.com/doodles/julija-beniuseviciute-zymantienes-169th-birthday",
+			"http://www.google.com/doodles/italian-republic-day-2014",
+			"http://www.google.com/doodles/dragon-boat-festival-2014", };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
 		String[] imageTexts = new String[] { "image1", "image2", "image3",
 				"image4", "image5", "image6" };
 
-		List<Map<String, Object>> data = new ArrayList<>();
+		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 		for (int i = 0; i < imageIds.length; i++) {
 			Map<String, Object> item = new HashMap<String, Object>();
 			item.put("image", imageIds[i]);
@@ -44,6 +56,15 @@ public class MainActivity extends ActionBarActivity {
 				R.layout.my_simple_list_item2, from, to);
 
 		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view,
+					int index, long id) {
+				Toast.makeText(MainActivity.this, LINKS[index],
+						Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	@Override
