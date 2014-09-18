@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
 		// ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
 		// android.R.layout.simple_list_item_1, data);
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				R.layout.my_simple_list_item, data);
 
 		listView.setAdapter(adapter);
