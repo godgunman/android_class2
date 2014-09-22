@@ -40,30 +40,7 @@ public class MessageActivity extends Activity {
 
 		writeFile(text, checked);
 		saveToParse(text, checked);
-
 		loadMessageFromParse();
-		
-		String[] rawData = readFile().split("\n");
-		List<Map<String, String>> data = new ArrayList<Map<String, String>>();
-
-		for (int i = 0; i < rawData.length - 1; i++) {
-			String[] d = rawData[i].split(",");
-
-			Map<String, String> item = new HashMap<String, String>();
-			item.put("text", d[0]);
-			item.put("checked", d[1]);
-
-			data.add(item);
-		}
-
-		String[] from = new String[] { "text", "checked" };
-		int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
-
-		SimpleAdapter adapter = new SimpleAdapter(this, data,
-				android.R.layout.simple_list_item_2, from, to);
-
-		listView.setAdapter(adapter);
-
 	}
 
 	private void saveToParse(String text, boolean checked) {
@@ -79,14 +56,31 @@ public class MessageActivity extends Activity {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
 		query.findInBackground(new FindCallback<ParseObject>() {
 			public void done(List<ParseObject> messages, ParseException e) {
-				for (ParseObject message : messages) {
-					Log.d("debug",
-							message.getString("text") + ","
-									+ message.getBoolean("checked"));
-				}
+				setListView(messages);
 			}
 		});
 
+	}
+
+	private void setListView(List<ParseObject> messages) {
+		List<Map<String, String>> data = new ArrayList<Map<String, String>>();
+
+		for (ParseObject message : messages) {
+
+			Map<String, String> item = new HashMap<String, String>();
+			item.put("text", message.getString("text"));
+			item.put("checked", "" + message.getBoolean("checked"));
+
+			data.add(item);
+		}
+
+		String[] from = new String[] { "text", "checked" };
+		int[] to = new int[] { android.R.id.text1, android.R.id.text2 };
+
+		SimpleAdapter adapter = new SimpleAdapter(this, data,
+				android.R.layout.simple_list_item_2, from, to);
+
+		listView.setAdapter(adapter);
 	}
 
 	// file location: data/data/com.example.simpleui/files/histroy.txt
