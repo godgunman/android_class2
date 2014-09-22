@@ -9,8 +9,10 @@ import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseException;
+import com.parse.SaveCallback;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -18,6 +20,7 @@ import android.widget.SimpleAdapter;
 public class MessageActivity extends Activity {
 
 	private ListView listView;
+	private ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +30,14 @@ public class MessageActivity extends Activity {
 		setContentView(R.layout.activity_message);
 
 		listView = (ListView) findViewById(R.id.listView1);
-
+		progressDialog = new ProgressDialog(this);
+		
 		String text = getIntent().getStringExtra("text");
 		boolean checked = getIntent().getBooleanExtra("checked", false);
 
+		progressDialog.setTitle("Loading ...");
+		progressDialog.show();
 		saveToParse(text, checked);
-		loadMessageFromParse();
 	}
 
 	private void saveToParse(String text, boolean checked) {
@@ -40,7 +45,12 @@ public class MessageActivity extends Activity {
 		ParseObject messageObject = new ParseObject("Message");
 		messageObject.put("text", text);
 		messageObject.put("checked", checked);
-		messageObject.saveInBackground();
+		messageObject.saveInBackground(new SaveCallback() {
+			@Override
+			public void done(ParseException e) {
+				loadMessageFromParse();
+			}
+		});
 	}
 
 	private void loadMessageFromParse() {
@@ -49,9 +59,9 @@ public class MessageActivity extends Activity {
 		query.findInBackground(new FindCallback<ParseObject>() {
 			public void done(List<ParseObject> messages, ParseException e) {
 				setListView(messages);
+				progressDialog.dismiss();
 			}
 		});
-
 	}
 
 	private void setListView(List<ParseObject> messages) {
