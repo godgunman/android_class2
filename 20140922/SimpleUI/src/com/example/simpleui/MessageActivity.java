@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.parse.ParseObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -33,10 +35,7 @@ public class MessageActivity extends Activity {
 		boolean checked = getIntent().getBooleanExtra("checked", false);
 
 		writeFile(text, checked);
-		// String data = readFile();
-
-		// ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-		// android.R.layout.simple_list_item_1, data.split("\n"));
+		saveToParse(text, checked);
 
 		String[] rawData = readFile().split("\n");
 		List<Map<String, String>> data = new ArrayList<Map<String, String>>();
@@ -59,6 +58,14 @@ public class MessageActivity extends Activity {
 
 		listView.setAdapter(adapter);
 
+	}
+
+	private void saveToParse(String text, boolean checked) {
+
+		ParseObject messageObject = new ParseObject("Message");
+		messageObject.put("text", text);
+		messageObject.put("checked", checked);
+		messageObject.saveInBackground();
 	}
 
 	// file location: data/data/com.example.simpleui/files/histroy.txt
