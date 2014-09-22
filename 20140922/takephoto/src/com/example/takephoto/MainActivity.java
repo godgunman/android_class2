@@ -2,6 +2,7 @@ package com.example.takephoto;
 
 import android.support.v7.app.ActionBarActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
@@ -10,13 +11,14 @@ import android.widget.ImageView;
 
 public class MainActivity extends ActionBarActivity {
 
+	private static final int TAKE_PHOTO_REQUEST_CODE = 0;
 	private ImageView imageView;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		imageView = (ImageView) findViewById(R.id.imageView1);
 	}
 
@@ -40,10 +42,23 @@ public class MainActivity extends ActionBarActivity {
 
 			Intent intent = new Intent();
 			intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-			startActivity(intent);
+			startActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
 
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == TAKE_PHOTO_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				Bitmap bitmap = data.getParcelableExtra("data");
+				imageView.setImageBitmap(bitmap);
+			}
+
+		}
 	}
 }
