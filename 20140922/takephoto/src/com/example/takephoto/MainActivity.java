@@ -1,17 +1,23 @@
 package com.example.takephoto;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 public class MainActivity extends ActionBarActivity {
 
+	private ImageView imageView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		imageView = (ImageView) findViewById(R.id.imageView1);
 	}
 
 	@Override
@@ -30,7 +36,12 @@ public class MainActivity extends ActionBarActivity {
 		if (id == R.id.action_settings) {
 			return true;
 		} else if (id == R.id.action_takephoto) {
-			Toast.makeText(this, "take photo", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(this, "take photo", Toast.LENGTH_SHORT).show();
+
+			Intent intent = new Intent();
+			intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+			startActivity(intent);
+
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
