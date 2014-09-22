@@ -9,11 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.parse.FindCallback;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseException;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -37,6 +41,8 @@ public class MessageActivity extends Activity {
 		writeFile(text, checked);
 		saveToParse(text, checked);
 
+		loadMessageFromParse();
+		
 		String[] rawData = readFile().split("\n");
 		List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
@@ -66,6 +72,21 @@ public class MessageActivity extends Activity {
 		messageObject.put("text", text);
 		messageObject.put("checked", checked);
 		messageObject.saveInBackground();
+	}
+
+	private void loadMessageFromParse() {
+
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+		query.findInBackground(new FindCallback<ParseObject>() {
+			public void done(List<ParseObject> messages, ParseException e) {
+				for (ParseObject message : messages) {
+					Log.d("debug",
+							message.getString("text") + ","
+									+ message.getBoolean("checked"));
+				}
+			}
+		});
+
 	}
 
 	// file location: data/data/com.example.simpleui/files/histroy.txt
