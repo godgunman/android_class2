@@ -28,6 +28,8 @@ import android.widget.LinearLayout;
 public class MainActivity extends ActionBarActivity {
 
 	private static final int TAKE_PHOTO_REQUEST_CODE = 0;
+	private static final int OPEN_GALLERY_REQUEST_CODE = 1;
+
 	private ImageView imageView;
 	private LinearLayout linearLayout;
 
@@ -66,6 +68,13 @@ public class MainActivity extends ActionBarActivity {
 			startActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
 
 			return true;
+		} else if (id == R.id.action_gallery) {
+
+			Intent intent = new Intent();
+			intent.setType("image/*");
+			intent.setAction(Intent.ACTION_GET_CONTENT);
+			startActivityForResult(intent, OPEN_GALLERY_REQUEST_CODE);
+
 		}
 		return super.onOptionsItemSelected(item);
 	}
