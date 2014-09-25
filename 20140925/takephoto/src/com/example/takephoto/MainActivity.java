@@ -1,6 +1,8 @@
 package com.example.takephoto;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import com.parse.FindCallback;
@@ -17,6 +19,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -90,6 +93,14 @@ public class MainActivity extends ActionBarActivity {
 
 				saveToParse(bitmap);
 			}
+		} else if (requestCode == OPEN_GALLERY_REQUEST_CODE) {
+			if (resultCode == RESULT_OK) {
+				Uri selectedImageUri = data.getData();
+				imageView.setImageURI(selectedImageUri);
+				saveToParse(selectedImageUri);
+
+				Log.d("debug", selectedImageUri.toString());
+			}
 		}
 	}
 
@@ -142,5 +153,17 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 		});
+	}
+
+	private void saveToParse(Uri uri) {
+		try {
+			Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+					getContentResolver(), uri);
+			saveToParse(bitmap);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
