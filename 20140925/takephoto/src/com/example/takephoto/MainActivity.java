@@ -1,6 +1,7 @@
 package com.example.takephoto;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -21,6 +22,7 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -35,6 +37,7 @@ public class MainActivity extends ActionBarActivity {
 
 	private ImageView imageView;
 	private LinearLayout linearLayout;
+	private Uri outputFile;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +69,11 @@ public class MainActivity extends ActionBarActivity {
 		} else if (id == R.id.action_takephoto) {
 			// Toast.makeText(this, "take photo", Toast.LENGTH_SHORT).show();
 
+			outputFile = getOutputFile();
+
 			Intent intent = new Intent();
 			intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFile);
 			startActivityForResult(intent, TAKE_PHOTO_REQUEST_CODE);
 
 			return true;
@@ -88,10 +94,10 @@ public class MainActivity extends ActionBarActivity {
 
 		if (requestCode == TAKE_PHOTO_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
-				Bitmap bitmap = data.getParcelableExtra("data");
-				imageView.setImageBitmap(bitmap);
-
-				saveToParse(bitmap);
+				// Bitmap bitmap = data.getParcelableExtra("data");
+				// imageView.setImageBitmap(bitmap);
+				// saveToParse(bitmap);
+				imageView.setImageURI(outputFile);
 			}
 		} else if (requestCode == OPEN_GALLERY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
@@ -166,4 +172,17 @@ public class MainActivity extends ActionBarActivity {
 			e.printStackTrace();
 		}
 	}
+
+	private Uri getOutputFile() {
+
+		File dcimDir = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+		if (dcimDir.exists() == false) {
+			dcimDir.mkdirs();
+		}
+
+		File file = new File(dcimDir, "photo.png");
+		return Uri.fromFile(file);
+	}
+
 }
