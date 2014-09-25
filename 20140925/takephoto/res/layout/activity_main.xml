@@ -8,15 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.takephoto.MainActivity" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical" >
-    </LinearLayout>
-
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
@@ -29,9 +20,32 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_alignLeft="@+id/linearLayout1"
         android:layout_below="@+id/imageView1"
         android:layout_marginTop="5dp"
         android:background="#000000" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

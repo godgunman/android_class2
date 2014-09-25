@@ -27,8 +27,10 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -37,6 +39,7 @@ public class MainActivity extends ActionBarActivity {
 
 	private ImageView imageView;
 	private LinearLayout linearLayout;
+	private ProgressBar progressBar;
 	private Uri outputFile;
 
 	@Override
@@ -45,8 +48,10 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 		Parse.initialize(this, "6GIweBfY6S45aUHHhzAkw4cgo6Cb7PlvUyYYwJFs",
 				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
+
 		imageView = (ImageView) findViewById(R.id.imageView1);
 		linearLayout = (LinearLayout) findViewById(R.id.linearLayout1);
+		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
 
 		loadFromParse();
 	}
@@ -98,6 +103,10 @@ public class MainActivity extends ActionBarActivity {
 				// imageView.setImageBitmap(bitmap);
 				// saveToParse(bitmap);
 				imageView.setImageURI(outputFile);
+
+				imageView.buildDrawingCache();
+				Bitmap bitmap = imageView.getDrawingCache();
+				saveToParse(bitmap);
 			}
 		} else if (requestCode == OPEN_GALLERY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
@@ -111,6 +120,9 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void loadFromParse() {
+
+		progressBar.setVisibility(View.VISIBLE);
+		linearLayout.removeAllViews();
 
 		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Photo");
 		query.findInBackground(new FindCallback<ParseObject>() {
@@ -134,6 +146,7 @@ public class MainActivity extends ActionBarActivity {
 							e1.printStackTrace();
 						}
 					}
+					progressBar.setVisibility(View.GONE);
 				}
 			}
 		});
@@ -156,6 +169,7 @@ public class MainActivity extends ActionBarActivity {
 				if (e == null) {
 					String url = file.getUrl();
 					Log.d("debug", url);
+					loadFromParse();
 				}
 			}
 		});
