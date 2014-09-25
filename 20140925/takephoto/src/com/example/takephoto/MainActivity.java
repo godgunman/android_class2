@@ -125,6 +125,7 @@ public class MainActivity extends ActionBarActivity {
 		linearLayout.removeAllViews();
 
 		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Photo");
+		query.orderByDescending("createdAt");
 		query.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
