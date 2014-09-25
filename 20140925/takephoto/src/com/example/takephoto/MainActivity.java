@@ -39,7 +39,7 @@ public class MainActivity extends ActionBarActivity {
 				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
 		imageView = (ImageView) findViewById(R.id.imageView1);
 		linearLayout = (LinearLayout) findViewById(R.id.linearLayout1);
-		
+
 		loadFromParse();
 	}
 
@@ -91,19 +91,22 @@ public class MainActivity extends ActionBarActivity {
 
 			@Override
 			public void done(List<ParseObject> objects, ParseException e) {
-				for (ParseObject object : objects) {
-					ParseFile file = object.getParseFile("file");
-					try {
-						byte[] data = file.getData();
-						Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0,
-								data.length);
-						ImageView imageView = new ImageView(MainActivity.this);
-						imageView.setImageBitmap(bitmap);
-						linearLayout.addView(imageView);
+				if (objects != null && e == null) {
+					for (ParseObject object : objects) {
+						ParseFile file = object.getParseFile("file");
+						try {
+							byte[] data = file.getData();
+							Bitmap bitmap = BitmapFactory.decodeByteArray(data,
+									0, data.length);
+							ImageView imageView = new ImageView(
+									MainActivity.this);
+							imageView.setImageBitmap(bitmap);
+							linearLayout.addView(imageView);
 
-					} catch (ParseException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						} catch (ParseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				}
 			}
