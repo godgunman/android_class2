@@ -1,19 +1,30 @@
 package com.example.push;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.PushService;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class MainActivity extends ActionBarActivity {
 
 	private EditText editText;
+	private Spinner spinner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +33,42 @@ public class MainActivity extends ActionBarActivity {
 				"nEFIK6PmEiidO3qnyvPa04WCi9rJCECOvN8qg5vf");
 		PushService.setDefaultPushCallback(this, MainActivity.class);
 		PushService.subscribe(this, "all", MainActivity.class);
+		PushService.subscribe(this, "device_" + getDeviceId(),
+				MainActivity.class);
 
 		setContentView(R.layout.activity_main);
 
 		editText = (EditText) findViewById(R.id.editText1);
+		spinner = (Spinner) findViewById(R.id.spinner1);
+
+		saveDeviceId();
+		getDeviceIds();
+	}
+
+	private void saveDeviceId() {
+		ParseObject object = new ParseObject("DeviceId");
+		object.put("deviceId", getDeviceId());
+		object.saveInBackground();
+	}
+
+	private void getDeviceIds() {
+		ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("DeviceId");
+		query.findInBackground(new FindCallback<ParseObject>() {
+			@Override
+			public void done(List<ParseObject> objects, ParseException e) {
+				List<String> ids = new ArrayList<String>();
+				for (ParseObject obj : objects) {
+					if (obj.has("deviceId")
+							&& obj.getString("deviceId") != null) {
+						ids.add(obj.getString("deviceId"));
+					}
+				}
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+						MainActivity.this,
+						android.R.layout.simple_spinner_item, ids);
+				spinner.setAdapter(adapter);
+			}
+		});
 	}
 
 	@Override
@@ -43,6 +86,10 @@ public class MainActivity extends ActionBarActivity {
 		push.setChannel("all");
 		push.setMessage(text);
 		push.sendInBackground();
+	}
+
+	private String getDeviceId() {
+		return Secure.getString(getContentResolver(), Secure.ANDROID_ID);
 	}
 
 	@Override
