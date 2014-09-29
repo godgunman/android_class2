@@ -15,6 +15,7 @@ import com.parse.ParseQuery;
 import com.parse.PushService;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.view.Menu;
@@ -22,12 +23,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 public class MainActivity extends ActionBarActivity {
 
 	private EditText editText;
 	private Spinner spinner;
+
+	// dirty code
+	public static LinearLayout linearlayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,7 @@ public class MainActivity extends ActionBarActivity {
 
 		editText = (EditText) findViewById(R.id.editText1);
 		spinner = (Spinner) findViewById(R.id.spinner1);
+		linearlayout = (LinearLayout) findViewById(R.id.linearlayout);
 
 		saveDeviceId();
 		getDeviceIds();
@@ -101,6 +107,12 @@ public class MainActivity extends ActionBarActivity {
 		push.setData(data);
 		// push.setMessage(text);
 		push.sendInBackground();
+	}
+
+	public void send2(View view) {
+		Intent intent = new Intent();
+		intent.setAction("com.example.UPDATE_STATUS");
+		sendBroadcast(intent);
 	}
 
 	private String getDeviceId() {
