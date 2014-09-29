@@ -60,6 +60,15 @@
                 <category android:name="com.example.push" />
             </intent-filter>
         </receiver>
+        
+        <receiver
+            android:name="com.example.push.MyCustomReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.example.UPDATE_STATUS" />
+            </intent-filter>
+        </receiver>
+    
     </application>
 
 </manifest>

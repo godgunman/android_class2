@@ -3,6 +3,9 @@ package com.example.push;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -83,9 +86,20 @@ public class MainActivity extends ActionBarActivity {
 		String text = editText.getText().toString();
 		String channel = "device_" + (String) spinner.getSelectedItem();
 
+		JSONObject data = new JSONObject();
+		try {
+			data.put("action", "com.example.UPDATE_STATUS");
+			data.put("text", text);
+			data.put("newItem", "newItem");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		ParsePush push = new ParsePush();
 		push.setChannel(channel);
-		push.setMessage(text);
+		push.setData(data);
+		// push.setMessage(text);
 		push.sendInBackground();
 	}
 
