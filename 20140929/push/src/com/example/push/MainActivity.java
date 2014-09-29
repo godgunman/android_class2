@@ -81,9 +81,10 @@ public class MainActivity extends ActionBarActivity {
 	public void send(View view) {
 
 		String text = editText.getText().toString();
+		String channel = "device_" + (String) spinner.getSelectedItem();
 
 		ParsePush push = new ParsePush();
-		push.setChannel("all");
+		push.setChannel(channel);
 		push.setMessage(text);
 		push.sendInBackground();
 	}
