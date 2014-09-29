@@ -1,6 +1,7 @@
 package com.example.push;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONException;
@@ -15,9 +16,13 @@ import com.parse.ParseQuery;
 import com.parse.PushService;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,14 +30,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 
 	private EditText editText;
 	private Spinner spinner;
-
-	// dirty code
-	public static LinearLayout linearlayout;
+	private LinearLayout linearlayout;
+	private MyCustomReceiver receiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,12 @@ public class MainActivity extends ActionBarActivity {
 
 		saveDeviceId();
 		getDeviceIds();
+
+		receiver = new MyCustomReceiver();
+
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction("com.example.UPDATE_STATUS");
+		registerReceiver(receiver, intentFilter);
 	}
 
 	private void saveDeviceId() {
@@ -78,6 +89,12 @@ public class MainActivity extends ActionBarActivity {
 				spinner.setAdapter(adapter);
 			}
 		});
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(receiver);
 	}
 
 	@Override
@@ -130,4 +147,37 @@ public class MainActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	public class MyCustomReceiver extends BroadcastReceiver {
+		private static final String TAG = "MyCustomReceiver";
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.d("debug", "in MyCustomReceiver");
+			try {
+				String action = intent.getAction();
+				String channel = intent.getExtras().getString(
+						"com.parse.Channel");
+				JSONObject json = new JSONObject(intent.getExtras().getString(
+						"com.parse.Data"));
+
+				Log.d(TAG, "got action " + action + " on channel " + channel
+						+ " with:");
+				Iterator itr = json.keys();
+				while (itr.hasNext()) {
+					String key = (String) itr.next();
+					Log.d(TAG, "..." + key + " => " + json.getString(key));
+					if ("text".equals(key)) {
+						String text = json.getString(key);
+						TextView textView = new TextView(context);
+						textView.setText(text);
+						linearlayout.addView(textView);
+					}
+				}
+			} catch (JSONException e) {
+				Log.d(TAG, "JSONException: " + e.getMessage());
+			}
+		}
+	}
+
 }
