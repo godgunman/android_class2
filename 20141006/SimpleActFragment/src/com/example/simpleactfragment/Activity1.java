@@ -11,5 +11,6 @@ public class Activity1 extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		Toast.makeText(this, "Activity1", Toast.LENGTH_SHORT).show();
+		setResult(RESULT_OK);
 	}
 }

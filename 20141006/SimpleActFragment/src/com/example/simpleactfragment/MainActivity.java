@@ -69,13 +69,13 @@ public class MainActivity extends ActionBarActivity {
 
 				if (v.getId() == R.id.button1) {
 					intent.setClass(getActivity(), Activity1.class);
-					getActivity().startActivityForResult(intent, 1);
+					startActivityForResult(intent, 1);
 				} else if (v.getId() == R.id.button2) {
 					intent.setClass(getActivity(), Activity2.class);
-					getActivity().startActivityForResult(intent, 2);
+					startActivityForResult(intent, 2);
 				} else if (v.getId() == R.id.button3) {
 					intent.setClass(getActivity(), Activity3.class);
-					getActivity().startActivityForResult(intent, 3);
+					startActivityForResult(intent, 3);
 				}
 			}
 		};
