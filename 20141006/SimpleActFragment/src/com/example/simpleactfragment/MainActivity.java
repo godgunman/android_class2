@@ -1,16 +1,17 @@
 package com.example.simpleactfragment;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -43,6 +44,16 @@ public class MainActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Fragment fragment = getSupportFragmentManager().findFragmentById(
+				R.id.container);
+		fragment.onActivityResult(requestCode, resultCode, data);
+
+		Log.d("debug", "[in activity] request code:" + requestCode);
+	}
+
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
@@ -50,7 +61,32 @@ public class MainActivity extends ActionBarActivity {
 
 		private Button button1, button2, button3;
 
+		private OnClickListener onClickListener = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+
+				if (v.getId() == R.id.button1) {
+					intent.setClass(getActivity(), Activity1.class);
+					getActivity().startActivityForResult(intent, 1);
+				} else if (v.getId() == R.id.button2) {
+					intent.setClass(getActivity(), Activity2.class);
+					getActivity().startActivityForResult(intent, 2);
+				} else if (v.getId() == R.id.button3) {
+					intent.setClass(getActivity(), Activity3.class);
+					getActivity().startActivityForResult(intent, 3);
+				}
+			}
+		};
+
 		public PlaceholderFragment() {
+		}
+
+		@Override
+		public void onActivityResult(int requestCode, int resultCode,
+				Intent data) {
+			Log.d("debug", "[in fragment] request code:" + requestCode);
 		}
 
 		@Override
@@ -61,6 +97,10 @@ public class MainActivity extends ActionBarActivity {
 			button1 = (Button) rootView.findViewById(R.id.button1);
 			button2 = (Button) rootView.findViewById(R.id.button2);
 			button3 = (Button) rootView.findViewById(R.id.button3);
+
+			button1.setOnClickListener(onClickListener);
+			button2.setOnClickListener(onClickListener);
+			button3.setOnClickListener(onClickListener);
 
 			return rootView;
 		}
