@@ -3,6 +3,9 @@ package com.example.simpleui;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,6 +18,8 @@ import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.os.Build;
@@ -64,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
 		private Button button;
 		private EditText editText;
 		private CheckBox checkBox;
+		private SharedPreferences sp;
 
 		public PlaceholderFragment() {
 		}
@@ -73,23 +79,46 @@ public class MainActivity extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
-
+			
+			sp = getActivity().getSharedPreferences("settings.txt",
+					Context.MODE_PRIVATE);
+			
 			button = (Button) rootView.findViewById(R.id.button1);
 			editText = (EditText) rootView.findViewById(R.id.editText1);
 			checkBox = (CheckBox) rootView.findViewById(R.id.checkBox1);
-
+			
+			editText.setText(sp.getString("text", ""));
+			checkBox.setChecked(sp.getBoolean("checkbox", false));
+			
 			button.setOnClickListener(new OnClickListener() {
-
+			
 				@Override
 				public void onClick(View v) {
 					showToast(editText.getText().toString());
 				}
 			});
+			
+			checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView,
+						boolean isChecked) {
+					SharedPreferences.Editor editor = sp.edit();
+					editor.putBoolean("checkbox", isChecked);
+					editor.commit();
+				}
+			});
+			
 			editText.setOnKeyListener(new OnKeyListener() {
 
 				@Override
 				public boolean onKey(View v, int keyCode, KeyEvent event) {
+					SharedPreferences sp = getActivity().getSharedPreferences(
+							"settings.txt", Context.MODE_PRIVATE);
+					SharedPreferences.Editor editor = sp.edit();
+					editor.putString("text", editText.getText().toString());
+					editor.commit();
+
 					if (event.getAction() == KeyEvent.ACTION_DOWN) {
 						if (keyCode == KeyEvent.KEYCODE_ENTER) {
 							showToast(editText.getText().toString());
@@ -99,16 +128,29 @@ public class MainActivity extends ActionBarActivity {
 					return false;
 				}
 			});
-
-			return rootView;
+			
+			
+						return rootView;
 		}
 
+		
+		
 		private void showToast(String text) {
+			editText.setText("");
 			if (checkBox.isChecked()) {
 				text = "***********";
 			}
 			Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), MessageActivity.class);
+			intent.putExtra("text", text);
+			intent.putExtra("checkbox", checkBox.isChecked());
+			getActivity().startActivity(intent);
+
 		}
+		
+		
 	}
 
 }
